@@ -616,7 +616,8 @@ With $I$, we have completely determined angles within the surface without referr
 ##### Second Fundamental Form
 
 $$
-II(X, Y) = \langle DN_p X, Df_p Y \rangle
+II(X, Y) = \langle DN_p X, Df_p Y \rangle
+
 $$
 
 > Theorem
