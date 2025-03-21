@@ -497,7 +497,6 @@ $I_p(X, Y) = \langle Df_p X, Df_p Y \rangle$ where $ X, Y \in T_p(\mathbb{R}^2) 
 - Arc-length by $ I(X, Y) $ : The arc-length of a curve on the surface can be determined using the first fundamental form.
 
   - **Velocity of a Point**:
-    
     - Suppose a point $ p \in U $ moves with velocity $ X(t) $.
     - The curve on the surface is given by:
       $
@@ -654,41 +653,6 @@ Locally Isometric Surfaces are invariant measured by Gaussian curvature. Gaussia
 ## 2 Representations
 
 > This chapter mainly focuses on 3D representations, including mesh, point cloud and implicit representation methods.
-
-Other than parametric representations, we use rasterized form(regular grids), including **multi-view** representation, **depth map**,  **volumetric**. And also use irregular geometric form like **mesh**, **point cloud** and **implicit shape** methods(use $F(x) = 0$ to represent the geometry of the surface).
-
-### **2.1 Meshes**
-
-![image-20250320170533150](assets/image-20250320170533150.png)
-
-#### 2.1.1 Formulation
-
-Mesh formulation can be seen as **manifold condition** plus a set of :
-
-$V=\{v_1,v_2,...,v_n\} \subset \mathbb{R}^3$
-
-$E=\{e_1,e_2,...,e_k\} \subseteq V \times V$
-
-$F=\{f_1,f_2,...,f_m\} \subseteq V \times V \times V$
-
-Manifold condition of discrete mesh is defined as:
-
-1. Each edge is incident to one or two faces.
-2. Faces incident to a vertex form a closed or open fan.
-
-Polygonal meshes are piece-wise linear approximation of smooth surfaces. Assume the situation of that you want to map points to real numbers, a.k.a you want to storage scalar on surface,($f(mesh) \to R$) there exists problem that the scale of  the mesh triangle is very important. So good triangulation is important (manifold, equi-length). While real-data 3D are often point clouds, meshes are quite often used to visualize 3D and generate ground truth for machine learning algorithms.
-
-## ![ ](assets/image-20250320171829381.png)
-
-#### 2.1.2 Storage
-
-The geometry(3D coordinates), Topology, Normal, color, texture coordinates, Per vertex, face, edge all should be contained in the mesh information(?)
-
-
-
-
-
-
 
 ## 3 Transformation
 
