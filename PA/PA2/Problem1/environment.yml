@@ -1,0 +1,26 @@
+name: hw2_nerf
+channels:
+  - pytorch
+  - pytorch3d
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pytorch=2.1.0
+  - torchvision
+  - pytorch3d
+  - cudatoolkit=11.8
+  - numpy
+  - pip
+  - pip:
+    - hydra-core
+    - Pillow
+    - plotly
+    - requests
+    - imageio
+    - opencv-python
+    - matplotlib
+    - PyMCubes
+    - tqdm
+    - visdom
