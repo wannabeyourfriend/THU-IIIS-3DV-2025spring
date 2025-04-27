@@ -1,0 +1,51 @@
+# DMTet training configuration file
+
+# Random seed
+seed: 42
+
+# Computation device
+device: "cuda"
+
+# Output directory
+output_dir: "outputs"
+
+# Data configuration
+data:
+  # Tetrahedral grid directory
+  tet_dir: "data/tets"
+  # Point cloud directory
+  pc_dir: "data/pcs"
+  # Tetrahedral grid resolution
+  grid_res: 64  # Options: 64, 70, 80, 90, 100, 128
+  # Point cloud file name (without extension)
+  point_cloud: "apple"
+
+# Model configuration
+model:
+  # Model type: "mlp" or "conv"
+  type: "mlp"
+  # Hidden layer dimension
+  hidden_dim: 256
+  # Number of network layers
+  num_layers: 8
+  # Number of positional encoding frequencies
+  num_frequencies: 10
+
+# Training configuration
+training:
+  # Learning rate
+  lr: 1e-4
+  # Number of epochs
+  num_epochs: 500
+  # Number of points sampled from mesh
+  num_samples: 5000
+  # Laplacian regularization coefficient
+  lambda_reg: 0.1
+  # Save interval (save every N epochs)
+  save_interval: 50
+  # Whether to use early stopping
+  early_stopping: true
+  # Early stopping patience (number of epochs without improvement before stopping)
+  patience: 20
+  # Validation interval (validate every N epochs)
+  val_interval: 5

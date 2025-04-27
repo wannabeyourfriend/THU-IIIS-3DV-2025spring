@@ -7,33 +7,33 @@ log = logging.getLogger(__name__)
 
 def train_model(model, train_loader, val_loader, loss_fn, optimizer, scheduler, num_epochs, device, save_dir=None):
     """
-    训练模型
+    Train the model
     
     Args:
-        model: 模型
-        train_loader: 训练数据加载器
-        val_loader: 验证数据加载器
-        loss_fn: 损失函数
-        optimizer: 优化器
-        scheduler: 学习率调度器
-        num_epochs: 训练轮数
-        device: 设备
-        save_dir: 模型保存目录
+        model: Model instance
+        train_loader: Training data loader
+        val_loader: Validation data loader
+        loss_fn: Loss function
+        optimizer: Optimizer
+        scheduler: Learning rate scheduler
+        num_epochs: Number of epochs
+        device: Device (cpu or cuda)
+        save_dir: Directory to save models
     
     Returns:
-        train_losses: 训练损失列表
-        val_losses: 验证损失列表
+        train_losses: List of training losses
+        val_losses: List of validation losses
     """
     train_losses = []
     val_losses = []
     best_val_loss = float('inf')
     
-    # 创建保存目录
+    # Create save directory
     if save_dir is not None:
         os.makedirs(save_dir, exist_ok=True)
     
     for epoch in range(num_epochs):
-        # 训练阶段
+        # Training phase
         model.train()
         train_loss = 0.0
         
@@ -41,24 +41,24 @@ def train_model(model, train_loader, val_loader, loss_fn, optimizer, scheduler, 
             images = images.to(device)
             point_clouds = point_clouds.to(device)
             
-            # 前向传播
+            # Forward pass
             outputs = model(images)
             
-            # 计算损失
+            # Compute loss
             loss = loss_fn(outputs, point_clouds)
             
-            # 反向传播和优化
+            # Backward pass and optimize
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
             
             train_loss += loss.item()
         
-        # 计算平均训练损失
+        # Compute average training loss
         avg_train_loss = train_loss / len(train_loader)
         train_losses.append(avg_train_loss)
         
-        # 验证阶段
+        # Validation phase
         model.eval()
         val_loss = 0.0
         
@@ -67,24 +67,24 @@ def train_model(model, train_loader, val_loader, loss_fn, optimizer, scheduler, 
                 images = images.to(device)
                 point_clouds = point_clouds.to(device)
                 
-                # 前向传播
+                # Forward pass
                 outputs = model(images)
                 
-                # 计算损失
+                # Compute loss
                 loss = loss_fn(outputs, point_clouds)
                 val_loss += loss.item()
         
-        # 计算平均验证损失
+        # Compute average validation loss
         avg_val_loss = val_loss / len(val_loader)
         val_losses.append(avg_val_loss)
         
-        # 更新学习率
+        # Update learning rate
         scheduler.step()
         
-        # 打印进度
+        # Print progress
         log.info(f"Epoch {epoch+1}/{num_epochs}, Train Loss: {avg_train_loss:.6f}, Val Loss: {avg_val_loss:.6f}")
         
-        # 保存最佳模型
+        # Save best model
         if save_dir is not None and avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
             torch.save({
@@ -93,9 +93,9 @@ def train_model(model, train_loader, val_loader, loss_fn, optimizer, scheduler, 
                 'optimizer_state_dict': optimizer.state_dict(),
                 'loss': best_val_loss,
             }, os.path.join(save_dir, 'best_model.pth'))
-            log.info(f"Save best model, validation loss: {best_val_loss:.6f}")
+            log.info(f"Saved best model, validation loss: {best_val_loss:.6f}")
     
-    # 保存最终模型
+    # Save final model
     if save_dir is not None:
         torch.save({
             'epoch': num_epochs,
@@ -103,22 +103,22 @@ def train_model(model, train_loader, val_loader, loss_fn, optimizer, scheduler, 
             'optimizer_state_dict': optimizer.state_dict(),
             'loss': avg_val_loss,
         }, os.path.join(save_dir, 'final_model.pth'))
-        log.info(f"Save final model, validation loss: {avg_val_loss:.6f}")
+        log.info(f"Saved final model, validation loss: {avg_val_loss:.6f}")
     
     return train_losses, val_losses
 
 def evaluate_model(model, test_loader, loss_fn, device):
     """
-    评估模型
+    Evaluate the model
     
     Args:
-        model: 模型
-        test_loader: 测试数据加载器
-        loss_fn: 损失函数
-        device: 设备
+        model: Model instance
+        test_loader: Test data loader
+        loss_fn: Loss function
+        device: Device (cpu or cuda)
     
     Returns:
-        avg_test_loss: 平均测试损失
+        avg_test_loss: Average test loss
     """
     model.eval()
     test_loss = 0.0
@@ -128,14 +128,14 @@ def evaluate_model(model, test_loader, loss_fn, device):
             images = images.to(device)
             point_clouds = point_clouds.to(device)
             
-            # 前向传播
+            # Forward pass
             outputs = model(images)
             
-            # 计算损失
+            # Compute loss
             loss = loss_fn(outputs, point_clouds)
             test_loss += loss.item()
     
-    # 计算平均测试损失
+    # Compute average test loss
     avg_test_loss = test_loss / len(test_loader)
     
     return avg_test_loss

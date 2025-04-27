@@ -50,9 +50,7 @@ class CubeDataset(Dataset):
         
         for cube_dir in self.cube_dirs:
             cube_path = os.path.join(self.root_dir, cube_dir)
-            # 获取所有图像文件 (0-15.png)
             image_files = [os.path.join(cube_path, f"{i}.png") for i in range(16)]
-            # 修改为 .ply 文件
             point_files = [os.path.join(cube_path, f"{i}.ply") for i in range(16)]
             
             for img_file, pc_file in zip(image_files, point_files):
@@ -65,16 +63,13 @@ class CubeDataset(Dataset):
     def __getitem__(self, idx):
         img_path, pc_path = self.samples[idx]
         
-        # 读取图像
         image = Image.open(img_path).convert('RGB')
         if self.transform:
             image = self.transform(image)
         
-        # 读取点云
         pcd = o3d.io.read_point_cloud(pc_path)
         point_cloud = np.asarray(pcd.points)
         
-        # 采样点云
         if point_cloud.shape[0] > self.num_points:
             indices = np.random.choice(point_cloud.shape[0], self.num_points, replace=False)
             point_cloud = point_cloud[indices]

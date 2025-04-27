@@ -2,84 +2,44 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-def pairwise_distances(a: torch.Tensor, b: torch.Tensor, p=2):
-    """
-    Compute the pairwise distance_tensor matrix between a and b which both have size [m, n, d]. The result is a tensor of
-    size [m, n, n] whose entry [m, i, j] contains the distance_tensor between a[m, i, :] and b[m, j, :].
-    :param a: A tensor containing m batches of n points of dimension d. i.e. of size [m, n, d]
-    :param b: A tensor containing m batches of n points of dimension d. i.e. of size [m, n, d]
-    :param p: Norm to use for the distance_tensor
-    :return: A tensor containing the pairwise distance_tensor between each pair of inputs in a batch.
-    """
+def pairwise_distances(tensor_a: torch.Tensor, tensor_b: torch.Tensor, norm_p=2):
+    if len(tensor_a.shape) != 3:
+        raise ValueError("Expected 3D tensor for tensor_a, got shape: {}".format(tensor_a.shape))
+    if len(tensor_b.shape) != 3:
+        raise ValueError("Expected 3D tensor for tensor_b, got shape: {}".format(tensor_b.shape))
+        
+    return (tensor_a.unsqueeze(2) - tensor_b.unsqueeze(1)).abs().pow(norm_p).sum(3)
 
-    if len(a.shape) != 3:
-        raise ValueError("Invalid shape for a. Must be [m, n, d] but got", a.shape)
-    if len(b.shape) != 3:
-        raise ValueError("Invalid shape for a. Must be [m, n, d] but got", b.shape)
-    return (a.unsqueeze(2) - b.unsqueeze(1)).abs().pow(p).sum(3)
+def chamfer_loss(point_set_a, point_set_b):
+    distance_matrix = pairwise_distances(point_set_a, point_set_b)
+    dist_a_to_b = torch.mean(torch.sqrt(distance_matrix.min(1)[0]))
+    dist_b_to_a = torch.mean(torch.sqrt(distance_matrix.min(2)[0]))
+    return dist_a_to_b + dist_b_to_a
 
-def chamfer(a, b):
-    """
-    Compute the chamfer distance between two sets of vectors, a, and b
-    :param a: A m-sized minibatch of point sets in R^d. i.e. shape [m, n_a, d]
-    :param b: A m-sized minibatch of point sets in R^d. i.e. shape [m, n_b, d]
-    :return: A [m] shaped tensor storing the Chamfer distance between each minibatch entry
-    """
-    M = pairwise_distances(a, b)
-    dist1 = torch.mean(torch.sqrt(M.min(1)[0]))
-    dist2 = torch.mean(torch.sqrt(M.min(2)[0]))
-    return (dist1 + dist2) 
-
-
-def chamfer_distance(template: torch.Tensor, source: torch.Tensor):
-	try:
-		from .cuda.chamfer_distance import ChamferDistance
-		cost_p0_p1, cost_p1_p0 = ChamferDistance()(template, source)
-		cost_p0_p1 = torch.mean(torch.sqrt(cost_p0_p1))
-		cost_p1_p0 = torch.mean(torch.sqrt(cost_p1_p0))
-		# chamfer_loss = (cost_p0_p1 + cost_p1_p0)/2.0
-		chamfer_loss = (cost_p0_p1 + cost_p1_p0)
-  
-	except:
-		chamfer_loss = chamfer(template, source)
-	return chamfer_loss
-
+def chamfer_distance(predicted_points, target_points):
+    return chamfer_loss(predicted_points, target_points)
 
 class ChamferDistanceLoss(nn.Module):
-	def __init__(self):
-		super(ChamferDistanceLoss, self).__init__()
+    def __init__(self):
+        super(ChamferDistanceLoss, self).__init__()
 
-	def forward(self, template, source):
-		return chamfer_distance(template, source)
+    def forward(self, predicted_points, target_points):
+        return chamfer_distance(predicted_points, target_points)
 
+def hausdorff_loss(point_set_a, point_set_b):
 
-def hausdorff(a, b):
-    """
-    Compute the Hausdorff distance between two sets of vectors, a, and b
-    :param a: A m-sized minibatch of point sets in R^d. i.e. shape [m, n_a, d]
-    :param b: A m-sized minibatch of point sets in R^d. i.e. shape [m, n_b, d]
-    :return: A [m] shaped tensor storing the Hausdorff distance between each minibatch entry
-    """
-    M = pairwise_distances(a, b)
-    # 计算 d(P,Q) = max_{p_i ∈ P} [min_{q_j ∈ Q} d(p_i, q_j)]
-    d_P_Q = torch.max(torch.min(M, dim=2)[0])
-    # 计算 d(Q,P) = max_{q_j ∈ Q} [min_{p_i ∈ P} d(q_j, p_i)]
-    d_Q_P = torch.max(torch.min(M, dim=1)[0])
-    # 取两者的最大值
-    return torch.max(d_P_Q, d_Q_P)
+    distance_matrix = pairwise_distances(point_set_a, point_set_b)
+    max_min_a_to_b = torch.max(torch.min(distance_matrix, dim=2)[0])
+    max_min_b_to_a = torch.max(torch.min(distance_matrix, dim=1)[0])
+    return torch.max(max_min_a_to_b, max_min_b_to_a)
 
-def hausdorff_distance(template: torch.Tensor, source: torch.Tensor):
-    """
-    Compute the Hausdorff distance between template and source point clouds
-    :param template: Template point cloud tensor of shape [m, n_a, d]
-    :param source: Source point cloud tensor of shape [m, n_b, d]
-    :return: Hausdorff distance between template and source
-    """
-    return hausdorff(template, source)
+def hausdorff_distance(predicted_points, target_points):
 
-class HausdorffDistanceLoss(nn.Module):
+    return hausdorff_loss(predicted_points, target_points)
+
+class HausdorffDistanceLoss(nn.Module):    
     def __init__(self):
         super(HausdorffDistanceLoss, self).__init__()
     
-    def forward(self, template, source):
-        return hausdorff_distance(template, source)
+    def forward(self, predicted_points, target_points):
+        return hausdorff_distance(predicted_points, target_points)
