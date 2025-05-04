@@ -1,12 +1,12 @@
 # 3D Vision Computing
 
-> Notes Taking: Alex
+> Notes Taking: Alex 
 >
 > Contact: `wang-zx23@mails.tsinghua.edu.cn`
 >
 > Instructor: Li Yi
 >
-> Reference: `Li Yi 's 3DV lecture & Hao Su's ML-meets-geometry lecture`
+> Main Reference: `Li Yi 's 3DV lecture & Hao Su's ML-meets-geometry lecture`
 
 [TOC]
 
@@ -21,9 +21,9 @@ Geometry understanding is very important in Robotics, Augmented Reality Autonomo
 - Recognition: Object classification, Object detection, 6D pose estimation, Segmentation,Human pose estimation
 - Relationship Analysis: Shape correspondences
 
-## Chapter1 **Geometry: Curves&&Surfaces** [Lecture 1]
+## **Chapter1 Geometry**: Curves&&Surfaces [**Lecture 1**]
 
-> This Chapter mainly focus on the basic concepts, definition and of geometry.
+> This Chapter mainly focus on the basic concepts, definition and math property about 3D geometry.
 
 ### **1.1 Curves**
 
@@ -651,7 +651,7 @@ The Gaussian curvature of an embedded smooth surface in  $\mathbb{R}^3$is invari
 
 Locally Isometric Surfaces are invariant measured by Gaussian curvature. Gaussian curvatures are vulnerable to noises in practice and not informative. Needed for more robust surface analysis.
 
-## Chapter2 Representation&&Transformation [Lectue 2-3]
+## **Chapter2 Representation && Transformation** [**Lectue 2, 3**]
 
 > This chapter mainly focuses on 3D representations and transformations, including mesh, point cloud and implicit representation methods.
 
@@ -842,7 +842,7 @@ def voxel_downsample_torch(points: torch.Tensor, voxel_size: float):
 
 Normal can be computed through PCA over a local neighborhood. And the choice of neighborhood size is important. RANSAC can improve quality in the presence of outliers.
 
-### **2.3 Implicit Representations**
+### 2.3 Implicit Representations
 
 In explicit representations of geometry, all points are given directly, genrally can be represented as $f: \mathbb{R}^2 \to \mathbb{R}^3 ; (u, v) \to (x, y,z)$. In the explicit representations points sampling is quite easy which make some tasks easy. However for the task that distinguish something inside or outside of the surface, we can turn to the implicit representations of geometry.
 
@@ -858,7 +858,7 @@ In explicit representations of geometry, all points are given directly, genrally
 
 > More details about implicit representation will be given in `Chapter4.1.3 NeRF`. The remain of this chapter focuses on the transformation and rotation of 3D objects.
 
-### 2.4 **Homogeneous Transformation**
+### 2.4 Homogeneous Transformation
 
 > Rigid Transformations and Homogeneous Coordinates
 
@@ -986,7 +986,7 @@ $$
   \end{bmatrix}
   $$
 
-### 2.5 **Rotation**
+### **2.5 Rotation**
 
 #### 2.5.1 Some Mathematics
 
@@ -1156,13 +1156,13 @@ Each representation has its own advantages and disadvantages, and converting bet
 
 The axis-angle representation of rotations offers an intuitive way to describe rotations. By constraining the domain of $\theta$, this representation can be unique at most points. It can be converted to and from rotation matrices via the exponential map and its inverse, when possible. Moreover, this representation induces a distance between rotations, which serves as a metric in $SO(3)$, independent of the parameterization used. From a learning perspective, each rotation corresponds to two quaternions, which is known as "double-covering." When using quaternions in neural networks, it is necessary to normalize them to unit length, which may cause issues with gradient magnitudes in practice. Quaternions are computationally efficient and are widely used in various applications, such as physical engines and robotics. It is important to pay attention to the convention used for representing quaternions, such as $(w, x, y, z) $or$ (x, y, z, w)$. Some popular conventions include $(w, x, y, z) $for SAPIEN, transforms3d, Eigen, Blender, MuJoCo, and V-Rep, while $(x, y, z, w)$ is used in ROS, PhysX, and PyBullet.
 
-## Chapter 3 3D Reconstruction [Lecture 4-8]
+## **Chapter 3 Reconstruction from Multi-view** [**Lecture 4, 5, 6**]
 
-> *: not include in lectures
+> This chapter focus on pipelines that take multiview images as input and output a 3d sterio. Section with * are not include in lectures.
 
-### 3.0 2D-3D Basics
+### **3.1 Basics** [Lecture 4]
 
-#### 3.0.0 Camera Model: Mapping 3D to 2D
+#### 3.1.1 Camera Model: Mapping 3D to 2D
 
 > 注意：这一小节使用的都是小孔相机模型
 
@@ -1173,7 +1173,7 @@ The axis-angle representation of rotations offers an intuitive way to describe r
 - Physical imaging plane $ O: [x, y]^T \in \mathbb{R}^2 $ with units in millimeters.
 - Pixel space $ \mathbf{p}: [x_{pixel}, y_{pixel}， 1]^T, \in \mathbb{R}^2 $, dimensionless.
 
-![Camera Coordinate System](E:\GITHUB\3DV\Note\assets\image-20250501131856060.png)
+![Camera Coordinate System](assets/image-20250501131856060-1746118438708-1.png)
 
 ##### Intrinsic
 
@@ -1225,7 +1225,7 @@ $$
 
 ##### Extrinsic
 
-![Extrinsic Parameters](E:\GITHUB\3DV\Note\assets\image-20250501130933181-1746082891914-2.png)
+![Extrinsic Parameters](assets/image-20250501130933181-1746118438709-2.png)
 
 (Transformation from the world coordinate system $ O^w: [X^w, Y^w, Z^w]^T $ to the camera coordinate system $ O^c: [X^c, Y^c, Z^c]^T $)
 
@@ -1235,7 +1235,7 @@ O^w \to O^c: \quad \mathbf{P^c} = \mathbf{R} \mathbf{P^w} + \mathbf{t}\\
 \begin{bmatrix} X^c \\ Y^c \\ Z^c \end{bmatrix} = \begin{bmatrix} \mathbf{R} & \mathbf{t} \end{bmatrix} \begin{bmatrix} X^w \\ Y^w \\ Z^w \\ 1 \end{bmatrix}
 $$
 
-##### **Imaging Formula**
+##### Imaging Formula
 
 From the world coordinate system $ O^w: [X^w, Y^w, Z^w]^T $ to the pixel space $ \mathbf{p} = [x_{pixel}, y_{pixel}] $
 
@@ -1250,9 +1250,9 @@ $$
  ,\mathbf{R} = \begin{bmatrix} R_{11} & R_{12} & R_{13} \\ R_{21} & R_{22} & R_{23} \\ R_{31} & R_{32} & R_{33} \end{bmatrix} ,\mathbf{t} = \begin{bmatrix} t_1 \\ t_2 \\ t_3 \end{bmatrix} \\
 $$
 
-#### 3.0.1 Camera Calibration*
+#### 3.1.1* Camera Calibration
 
-![image-20250501134345531](E:\GITHUB\3DV\Note\assets\image-20250501134345531.png)
+![image-20250501134345531](assets/image-20250501134345531-1746118438709-4.png)
 
 Camera calibration involves determining the intrinsic and extrinsic parameters of a camera to accurately map 3D world coordinates to 2D image coordinates.
 
@@ -1268,16 +1268,12 @@ $$
 
 where $ \hat{m}(\mathbf{K}, \mathbf{R}_i, \mathbf{t}_i, M_j) $ represents the projection of $ M_j $ onto the $ i $-th image.
 
-##### Process
-
 1. **Collect Data**: Capture a set of images of a known calibration pattern (e.g., a checkerboard) from different viewpoints.
 2. **Detect Feature Points**: Detect and identify feature points in each image.
 3. **Estimate Intrinsic Parameters**: Use a nonlinear optimization algorithm to minimize the reprojection error.
 4. **Estimate Extrinsic Parameters**: Estimate the extrinsic parameters for each image.
 5. **Refine the Model**: Iteratively refine the camera model by re-estimating the parameters.
 6. **Validate the Model**: Validate the accuracy of the camera model.
-
-##### Projection Model
 
 In homogeneous coordinates, the projection point in the chessboard coordinate system is $ \tilde{m} = [u, v, 1]^T $, which has the corresponding relationship:
 $$
@@ -1293,112 +1289,984 @@ $$
 $$
 where $ \mathbf{H} $ is the homography matrix.
 
-#### 3.0.3  Epipolar Geometry: 2-view Sterio
-
-##### 对极约束
-
-如图两平面均是
-
-![image-20250501140404196](E:\GITHUB\3DV\Note\assets\image-20250501140404196-1746082891913-1.png)
-
-- Epipolar constraint: x1对应的三维点X在另一图像上的投影必然在另一图像的对极线上。如图p1的潜在匹配点一定位于极线l2上面。
-
-##### 本质矩阵关联两视点
-
-- I1平面到I2平面的坐标系变换是$R | t$即，对于一个在I1坐标系内坐标为$X$的点，在I2坐标系为$RX+t$,也可表述为O2相对于O1的外参数是R和t
-
-- 下图中的两个蓝色框代表的是**像素平面**（这次使用的是透视相机模型而非前面的小孔相机模型），p1p2均是像素平面上的点，选择左边的相机坐标系作为世界坐标系，右边的相机相对于左相机的外参数是$[R|t]$根据$\mathbf{p} = \frac{1}{Z^c} \mathbf{K}\mathbf{P^c}$有$z_1p_1 = K_1P \quad z_2p_2 = K_2 (RP + t)$
-- 在尺度的意义下有$z_1 \approx z_2$因此可以得到$p1 = $
-- 那么如何使用对极约束来关联两个视图: 下图中x1x2都是**归一化成像平面**上的点，即$P'$，根据$\mathbf{p} = \mathbf{K} \mathbf{P'}$有
-
-| ---                                                          | ---                                                          |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![image-20250501142005382](assets/image-20250501142005382.png) | ![image-20250501140117148](assets/image-20250501140117148.png) |
-
-
-
-
-
-| ---                                                          | ---                                                          |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![image-20250501135913677](assets/image-20250501135913677.png) | ![image-20250501140008988](assets/image-20250501140008988.png) |
-
-
-
-
-
-#### 3.0.4 Depth Images: 2.5D Representation*
+#### 3.1.2* Depth Images: 2.5D Representation
 
 We want to aggregate complete 3D scenes from partial observation of the world. Beyond the image taken by camera which are in 2D pictures(single view/ single frame), there are actually different types of sensors and visual data as input.
 
-![image-20250430232502733](E:\GITHUB\3DV\Note\assets\image-20250430232502733.png)
+| **Depth sensors**                                            | Depth image                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20250430232502733](assets/image-20250430232502733.png) | ![image-20250501232351939](assets/image-20250501232351939.png) |
 
-#### 
+- **Depth sensors** are a form of 3D range finder, which measure multi-point distance information across a wide Field-of-View (FoV). 
 
-Depth sensors are a form of 3D range finder, which measure multi-point distance information across a wide Field-of-View (FoV)
+- **A depth image** is a single-channel image filled by depth values. Attention that depth image records z depth, i.e., **the distance along z axis** (optical axis) from the optical center to the point, **not ray depth** (the distance between the optical center and the point).
+
+- **Why 2.5D？**True 3D representation should enable distance measurement between two points, in addition to depth,  you need $K$ to compute $(x,y,z)$ that is truly 3D, therefore depth is only 2.5D
+
+- **Stereo Sensors** (1) *estimate correspondence*, (2) *compute disparity* and then (3) *turn it into depth*.
+
+  | Stereo Sensors                                               | Point Triangulation                                          |
+  | ------------------------------------------------------------ | ------------------------------------------------------------ |
+  | ![image-20250501233017248](assets/image-20250501233017248.png) | ![image-20250501233033873](assets/image-20250501233033873.png) |
+
+- **Disparity Maps**
+
+  | Disparity                                                    | Parallel binocular depth                                     |
+  | ------------------------------------------------------------ | ------------------------------------------------------------ |
+  | ![image-20250430195352274](assets/image-20250430195352274.png) | ![image-20250501233459323](assets/image-20250501233459323.png) |
+
+  ![image-20250502001423666](assets/image-20250502001423666-1746118438709-3.png)
+
+- To fix the disadvantages of passive sterio sensors we can use **Structure Light**.
+
+  ![image-20250502001839000](assets/image-20250502001839000-1746118438709-5.png)
+
+  ![image-20250502002247429](assets/image-20250502002247429-1746118438709-6.png)
+
+#### 3.1.3  Epipolar Geometry
+
+##### Epipolar constraint
+
+![image-20250501140404196](assets/image-20250501140404196-1746118438709-7.png)
+
+When a 3D point X is projected onto the first image as point x₁, its corresponding projection in the second image must lie on a specific line known as the epipolar line. As shown in the figure, the potential matches for point p₁ must lie on the epipolar line l₂.
+
+##### Relating Two Views
+
+The coordinate transformation from plane I₁ to plane I₂ is represented by [R|t]. For a point with coordinates X in the I₁ coordinate system, its coordinates in the I₂ system are RX+t. Alternatively, this can be described as O₂ having extrinsic parameters R and t relative to O₁. In the diagrams, the blue frames represent pixel planes (using a perspective camera model rather than the pinhole camera model discussed earlier). Points p₁ and p₂ are located on these pixel planes. If we choose the left camera coordinate system as the world coordinate system, the right camera has extrinsic parameters [R|t] relative to the left camera. According to the equation $\mathbf{p} = \frac{1}{Z^c} \mathbf{K}\mathbf{P^c}$, we have:
+$$
+z_1p_1 = K_1P \quad z_2p_2 = K_2 (RP + t)
+$$
+To relate the two views using epipolar constraints: Points x₁ and x₂ in the diagrams are on the normalized image planes , denoted as $P'$. According to $\mathbf{p} = \mathbf{K} \mathbf{P'}$, we have:
+
+$$x_1 = \mathbf{K_1}^{-1}\mathbf{p_1} = \mathbf{K_1}^{-1}\frac{1}{z_1} \mathbf{K_1}P$$
+$$x_2 = \mathbf{K_2}^{-1}\frac{1}{z_2}\mathbf{K_2}(RP+t)$$
+
+In terms of scale, we can approximate $z_1 \approx z_2$ This gives us $Rx_1+t \approx x_2$. Taking the cross product with t on both sides:
+$$t \times(Rx_1 + t) \approx t \times x_2$$ Then taking the dot product with x₂ on both sides:
+$$x_2 \cdot [t_{\times}]Rx_1 = x_2 \cdot (t \times x_2)$$ Defining the **essential matrix** $E = [t_{\times}]R$, we get the first equation:
+$$x_2^TEx_1 = 0$$ Substituting the expressions for x₁ and x₂:
+$$p_2^TK^{-T}[t_{\times}]RK^{-1}p_1 = 0$$ Defining the **fundamental matrix** $F = K^{-T}[t_{\times}]RK^{-1}$, we get:
+$$p_2^T Fp_1 = 0$$
+
+| ![image-20250501142005382](assets/image-20250501142005382.png) | ![image-20250501140117148](assets/image-20250501140117148.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20250501135913677](assets/image-20250501135913677.png) | ![image-20250501140008988](assets/image-20250501140008988.png) |
+
+### **3.2 SfM**: Structure from Motion [Lecture 4]
+
+#### 3.2.1 Overview
+
+SfM is the process of reconstructing 3D structure from its projections into a series of images taken from different viewpoints. (Johannes L.Schonberger, e.t.c.) The concept involves analyzing the apparent motion of features across multiple images to recover the 3D structure of a scene and the camera motion. The aim is to reconstruct sparce 3D model in a large wide.
+
+![image-20250502102129151](assets/image-20250502102129151.png)
+
+ Incremental SfM is a sequential processing pipeline with an iterative reconstruction component
+
+#### 3.2.2 Pipeline
+
+0. **Data Association**
+
+![image-20250502101809170](assets/image-20250502101809170.png)
+
+- Input: Unstructured Images
+
+- Outputs: 
+  - 1) identified pairs of overlapping images
+  - 2) geometrically verified inlier matches (and optionally, feature descriptors for later use)
+  - 3) related camera poses (if known calibration)
+
+![image-20250502101238217](assets/image-20250502101238217.png)
+
+1. **Feature Extraction and Matching** : Detect distinctive features in each image and establish correspondences between them across different images.
+
+   ![image-20250502102009951](assets/image-20250502102009951.png)
+
+2. **Initial Reconstruction** : Select an initial image pair(two non-panoramic view $||t||\neq 0$), estimate the relative camera pose between them, and triangulate the inlier correspondences to obtain their 3D coordinates. (for example, by estimating F matrix?)
+
+   ![image-20250502102338177](assets/image-20250502102338177.png)
+
+3. **Bundle Adjustment Optimization** : Refine both camera parameters and 3D point positions by minimizing the reprojection error across all observations.
+   $$
+   \min_{P,X}||x - \pi(P,X)||\\
+   $$
+
+4. **Incremental Reconstruction** : For each additional image, estimate its camera pose relative to the existing reconstruction and triangulate new 3D points. Repeat the bundle adjustment to optimize the entire model.
+
+   ![image-20250502104647853](assets/image-20250502104647853.png)
+
+> Bundle Adjustment
+
+Bundle Adjustment is a critical optimization technique used in both Structure from Motion (SFM) and Simultaneous Localization and Mapping (SLAM). It jointly optimizes camera parameters and 3D point positions by minimizing the sum of reprojection errors across all observations.
+$$
+\text{Minimize sum of squared reprojection errors}:\\
+g(X, R, t) = \sum_{i = 1}^m \sum_{j = 1}^n w_{ij}·||P(x_i, R_j, t_j) - x||^2
+$$
+Specifically, it adjusts the camera extrinsic parameters (position and orientation) and the 3D point coordinates to minimize the difference between the observed 2D feature locations and the projected locations of their corresponding 3D points. This optimization is typically solved using least squares methods and is essential for achieving high-precision 3D reconstruction and camera pose estimation.
+
+#### 3.2.3 Related
+
+Global SFM estimate global rotations: $\min_{R} ||R_{ij} - R_iR_j T||$
+
+![image-20250502104847242](assets/image-20250502104847242.png)
+
+The complete understanding of SFM requires knowledge from multiple areas, including:
+
+- Stereo vision and triangulation
+- Camera calibration and pose estimation
+- Feature detection and matching algorithms
+- Optimization techniques for non-linear systems
+  Several important papers and SLAM (Simultaneous Localization and Mapping) algorithms have contributed significantly to this field, providing robust solutions for various applications in computer vision, robotics, and augmented reality.
+
+![image-20250502104926219](assets/image-20250502104926219.png)
 
 
 
-这一部分需要简要总结**相机模型**、内外参数矩阵、深度图、对极几何、相机标定、立体匹配的基本知识
+#### 3.2.4 Learning Based SfM
 
-结合知乎内容二六七+lyb第一讲+wanghe第9讲
+> How to use learning-based methods to improve the robustness/precision of the SfM pipeline？Two thoughts:
+>
+> 1. Improving **features and keypoints** for matching
+>
+> 2. Improving the **matching process** via global reasoning
+
+##### SuperPoint: A Learned Detector and Descriptor
+
+![image-20250502113455550](assets/image-20250502113455550.png)
+
+What makes for good key points? Points should be **repeatable and distinctive**. 
+
+![image-20250502112227173](assets/image-20250502112227173.png)
+
+| Detector                                                     | Descriptor                                                   |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20250502112509269](assets/image-20250502112509269.png) | ![image-20250502112555513](assets/image-20250502112555513.png) |
+| No upsampling layers<br/>Each output cell responsible for a 8 X 8 pixel patch | Bilinear interpolation using keypoint locations to get descriptors |
+
+![image-20250502113333421](assets/image-20250502113333421.png)
+
+1. **Synthetic Pre - training**
+   - **Dataset Creation**: A synthetic dataset “Synthetic Shapes” is created, composed of 2D geometric shapes (e.g., quadrilaterals, triangles). Interest points are clearly defined at junctions and specific positions. After rendering, homographic warps are applied to augment data.
+   - ![image-20250502115408258](assets/image-20250502115408258.png)
+   - **MagicPoint Training**: Use the detector part of SuperPoint architecture to train on “Synthetic Shapes”. Let the detector function be $f_{\theta}(\cdot)$, and train it with the data from the synthetic dataset. Denote the input image as $I$, and the output interest points as $x = f_{\theta}(I)$. MagicPoint outperforms traditional detectors on this dataset in terms of mean Average Precision (mAP).
+
+2. **Homographic Adaptation**
+
+   ![image-20250502115519098](assets/image-20250502115519098.png)
+
+   1. **Formulation**: Based on the idea that an ideal interest point operator should be covariant with respect to homographies. Given a random homography $H$, if $f_{\theta}(\cdot)$ is covariant, then $\mathcal{H}x = f_{\theta}(\mathcal{H}(I))$, which can be rewritten as $x=\mathcal{H}^{-1} f_{\theta}(\mathcal{H}(I))$. In practice, we use the empirical sum over a set of random homographies. The improved detector $\hat{F}(\cdot)$ is defined as $\hat{F}\left(I ; f_{\theta}\right)=\frac{1}{N_{h}} \sum_{i = 1}^{N_{h}} \mathcal{H}_{i}^{-1} f_{\theta}\left(\mathcal{H}_{i}(I)\right)$, where $N_{h}$ is the number of homographies.
+
+   2. **Choosing Homographies**: Decompose potential homographies into simple transformations (translation, scale, etc.). Sample these transformations within pre - determined ranges and compose them. Experiments show that $N_{h}=100$ gives a good balance in performance improvement.
+
+   3. **Iterative Process**: Apply Homographic Adaptation iteratively to improve the base MagicPoint architecture on real - world images. The resulting model after adaptation is SuperPoint.
+
+      ![image-20250502115629274](assets/image-20250502115629274.png)
+
+3. **Joint Training of SuperPoint**
+   - **Pseudo - ground Truth Generation**: Use the MagicPoint detector and MS - COCO 2014 training dataset (resized to 240×320 and grayscale) to generate pseudo - ground truth labels. Apply Homographic Adaptation with $N_{h}=100$ twice.
+   - **Training with Loss Functions**
+     - The final loss $\mathcal{L}$ is the sum of the interest point detector loss $\mathcal{L}_{p}$ and the descriptor loss $\mathcal{L}_{d}$, weighted by $\lambda$, i.e., $\mathcal{L}=\mathcal{L}_{p}+\mathcal{L}_{p}'+\lambda \mathcal{L}_{d}$.
+     - For the interest point detector loss $\mathcal{L}_{p}$, it is a cross - entropy loss over cells $x_{h w}$ in the output of the interest point detector. Given the ground - truth labels $y_{h w}$, $\mathcal{L}_{p}(\mathcal{X}, Y)=\frac{1}{H_{c} W_{c}} \sum_{\substack{h = 1\\w = 1}}^{H_{c}, W_{c}} l_{p}\left(x_{h w} ; y_{h w}\right)$, where $l_{p}\left(x_{h w} ; y\right)=-\log \left(\frac{\exp \left(x_{h w y}\right)}{\sum_{k = 1}^{65} \exp \left(x_{h w k}\right)}\right)$.
+     - For the descriptor loss $\mathcal{L}_{d}$, it is applied to pairs of descriptor cells $d_{h w}$ and $d_{h' w'}'$. Given the homography - induced correspondence $s_{h w h' w'}$, $\mathcal{L}_{d}\left(\mathcal{D}, \mathcal{D}', S\right)=\frac{1}{\left(H_{c} W_{c}\right)^{2}} \sum_{\substack{h = 1\\w = 1}}^{H_{c}, W_{c}} \sum_{\substack{h' = 1\\w' = 1}}^{H_{c}, W_{c}} l_{d}\left(d_{h w}, d_{h' w'}' ; s_{h w h' w'}\right)$, where $l_{d}\left(d, d' ; s\right)=\lambda_{d} * s * \max \left(0, m_{p}-d^{T} d'\right)+(1 - s) * \max \left(0, d^{T} d'-m_{n}\right)$. 
+
+##### SuperGlue: context aggregation + matching + filtering
+
+![image-20250502120202178](assets/image-20250502120202178.png)
+
+> Main focus: Context is important in matching!
+
+- Formulation
+
+  ![image-20250502120544173](assets/image-20250502120544173.png)
+
+- Components
+
+  ![image-20250502121201901](assets/image-20250502121201901.png)
+
+  - A **Graph Neural Network with attention**: Encodes contextual cues & priors and reasons about the 3D scene.
+  - **Solving a partial assignment problem**: Using Differentiable solver and enforces the assignment constraints agree to domain knowledge
+
+- Pipeline
+
+  | <img src="assets/image-20250502121756638.png" alt="image-20250502121756638" style="zoom:180%;" /> | ![image-20250502121828751](assets/image-20250502121828751.png) | <img src="assets/image-20250502121944843.png" alt="image-20250502121944843" style="zoom:180%;" /> |
+  | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+  | ![image-20250502121814525](assets/image-20250502121814525.png) | ![image-20250502121838715](assets/image-20250502121838715.png)</br>![image-20250502121922787](assets/image-20250502121922787.png) | ![image-20250502122431978](assets/image-20250502122431978.png) |
+  | ![image-20250502122614079](assets/image-20250502122614079.png) | ![image-20250502122659486](assets/image-20250502122659486.png) | ![image-20250502122729821](assets/image-20250502122729821.png) |
+  | ![image-20250502122626230](assets/image-20250502122626230.png) | ![image-20250502122708797](assets/image-20250502122708797.png) | ![image-20250502122749974](assets/image-20250502122749974.png) |
+
+### 3.3 **MVS**: Muti-View Stereo [Lecture 5]
+
+| Fron image to dense 3D                     | MVS Pipeline                                                 |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| ![rom](assets/image-20250502123139123.png) | ![image-20250502170329562](E:\GITHUB\3DV\Note\assets\image-20250502170329562.png) |
+
+#### 3.3.1 Overview
+
+The **definition** of multi-view stereo is reconstructing the dense 3D shape from a set of images 
+and camera parameters. There are many application based on this tech: (1) Enable inspection in hard to reach areas with drone photos and 3D reconstruction (2) Create 3D model from images (3) Provide tools to inspect on images and map interactions to 3D.
+
+Multi - View Stereo (MVS) aims to compute the three - dimensional (3D) structure of an object or a scene from multiple calibrated images. The input for MVS is a set of multi - view images of a scene or object. These images are captured from different viewpoints, and the camera parameters (both intrinsic and extrinsic) are assumed to be known. Additionally, a set of sparse matching points (from feature - based matching algorithms) may also be provided as input in some cases.
+
+- Given the multi - view images with known camera parameters, the main goal of MVS is to estimate the dense 3D surface coordinates of the scene or object. This involves finding the depth value for each pixel in the images (or a subset of pixels) and then using these depth values to construct a 3D point cloud or a surface model.
+- Mathematically, for each pixel $p$ in a reference image $I_{r}$, we want to find its corresponding 3D point $P=(X, Y, Z)$ in the world coordinate system. Using the camera projection equations $p = K[R|t]P$, where $K$ is the camera intrinsic matrix, $[R|t]$ is the camera extrinsic matrix, we can relate the 2D pixel coordinates $p=(u, v)$ to the 3D world coordinates $P$. However, in MVS, we need to solve this problem in a multi - view context, considering multiple images $I_{1},I_{2},\cdots,I_{n}$ to disambiguate the depth values and get more accurate 3D reconstructions.
+
+#### 3.3.2 Classical Pipeline
+
+-  Step 1: Select Matching Views
+    Choose several matching views corresponding to the reference view.
+- Step 2: Pixel - level Processing in Iterations
+    - **i**: For each pixel in the reference view, further select matching views. This is to narrow down the views that are most relevant for calculating the depth information of this specific pixel.
+    - **ii**: Define the range of depth and normal values. This provides a search space for estimating the 3D position of the pixel.
+    - **iii**: Compute the photometric matching cost (such as Normalized Cross - Correlation, NCC) between the reference view and multiple matching views. This cost measures how well the regions around the pixel in different views match in terms of photometric properties.
+    - **iv**: Select the candidate 3D point with the optimal (lowest in most cases) matching cost. This 3D point is considered as the best estimate for the position of the pixel in 3D space.
+- Step 3: Post - processing
+    Filter out noisy depth values and fuse multiple depth maps. This step aims to improve the quality of the depth information by removing incorrect or inconsistent depth values and combining depth maps from different processing steps or views.
+
+The basic idea of **Dense Depth Estimation** which is the core step in MVS (estimate the depth values for a large number of pixels, ideally all pixels in the images) is **reconstruction from photometric consistency**. The assumption is that corresponding points in multiple images of the same scene should have similar photometric properties (such as color and intensity). By minimizing the photometric differences (e.g., photometric consistency loss) between projected points across different views, we can estimate the 3D structure. For example, in a multi - view setup, if a point in one image is projected to another image based on a hypothesized 3D position, the color/intensity at the projected location should match the actual pixel value in that image as closely as possible.
+
+![image-20250502163702586](assets/image-20250502163702586.png)
+
+- **Plane Sweep**: We form different depth planes based on the reference view. For each depth plane, we use a **homography matrix** $H$ to **map the plane to the source views and calculate the matching cost** (such as Normalized Cross - Correlation - NCC) between the projected regions. The depth value with the minimum matching cost is considered as the estimated depth for the pixel in the reference view.
+  $$
+  SSD=\sum_{i, j}(W_1(i, j)-W_2(i, j))^{2}
+  $$
+
+  $$
+  \text{NCC:normalized cross corrlaion}\\
+  NCC=\frac{\sum_{i, j}\left(W_1(i, j)-\mu_{W_1}\right)\left(W_2(i, j)-\mu_{W_2}\right)}{\sqrt{\sum_{i, j}\left(W_1(i, j)-\mu_{W_1}\right)^{2} \sum_{i, j}\left(W_2(i, j)-\mu_{W_2}\right)^{2}}}
+  $$
+
+  ![image-20250502164101089](assets/image-20250502164101089.png)
+
+  
+
+  - Details: Calculation of the Homography Matrix $H$
+
+    - Assume that the world coordinate system is the coordinate system of the reference camera. Then:
+      - A pixel $p_1 = [(x, y, 1)]^T$ in the reference image satisfies $p_1\cong K_1P$.
+      - $P$ is a point on the plane $\Pi_d$ formed by back - projecting the reference image at a distance $d$ into space. The plane $\Pi_d$ is parallel to the imaging plane.
+      - Let $n$ be the normal vector of $\Pi_d$ ($n = [0, 0, 1]^T$). Then $n^TP + d = 0$, which implies $-\frac{n^TP}{d}=1$.
+    - For any source camera, with camera intrinsic matrix $K_i$ and extrinsic matrices $R_i, t_i$:
+      - A pixel $p_i$ in the source image satisfies $p_i\cong K_i(R_iP + t_i)=K_i\left(R_iP + t_i\cdot\left(-\frac{n^TP}{d}\right)\right)=K_i\left(R_i-\frac{t_i\cdot n^T}{d}\right)P$.
+      - Also, $p_i\cong K_i\left(R_i-\frac{t_i\cdot n^T}{d}\right)K_1^{-1}p_1$.
+      - The matrix $H = K_i\left(R_i-\frac{t_i\cdot n^T}{d}\right)K_1^{-1}$ is defined. This matrix $H$ establishes the correspondence between pixels of the two images and is called the homography matrix. 
+
+    ![image-20250502172629707](assets/image-20250502172629707.png)
+
+- Selecting multiple matching views: 
+
+  ![屏幕截图 2025-05-02 165322](assets/屏幕截图 2025-05-02 165322.png)
+
+| Principles of selecting views                                | Selecting Examples                                           |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| **Geometric Proximity**: Views that are geometrically close to the reference view are preferred. Geometrically close views are more likely to have overlapping regions that can provide consistent information for depth estimation. For example, cameras that are adjacent in a multi - camera setup covering a scene. <br/>**Photometric Similarity**: Views with similar photometric properties to the reference view are chosen. Views where the intensity and color of corresponding regions match well are more suitable for calculating accurate depth information. If there are significant photometric differences (e.g., due to different lighting conditions), it can lead to errors in depth estimation. <br/>**Spatial Coverage**: Views that cover different parts of the scene relative to the reference view are selected. This helps in getting a more comprehensive understanding of the 3D structure. | ![image-20250502165617910](E:\GITHUB\3DV\Note\assets\image-20250502165617910.png) |
+
+#### 3.3.3 Learning-based MVS
+
+Why learning based methods? Learned feature can do more robust matching and the shape prior learned by the network can do more complex reconstruction. MVSNet
+
+##### MVSNet: A first pipeline
+
+![image-20250502181820460](assets/image-20250502181820460.png)
+
+- **Image Feature Extraction**
+  - **Input**: $N$ input images $\{I_{i}\}_{i = 1}^{N}$.
+  - **Process**: An eight - layer 2D CNN is utilized. Strides of layer 3 and 6 are set to 2, dividing the feature towers into three scales. In each scale, two convolutional layers (with Batch Normalization (BN) and Rectified Linear Unit (ReLU), except the last layer) are applied, and parameters are shared among all feature towers.
+  - **Output**: $N$ 32 - channel feature maps $\{F_{i}\}_{i = 1}^{N}$, which are $1/4$ the size of the input images in each dimension. 
+
+> **Homography**
+
+| ![image-20250502222750795](assets/image-20250502222750795.png) | ![image-20250502222836394](E:\GITHUB\3DV\Note\assets\image-20250502222836394.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| $q' = K\left(R + \frac{1}{d}tn^T\right)K^{-1}q$<br/>The homography matrix $H$ between the pixel coordinate systems of two cameras for a point on the plane is defined as $H = K\left(R + \frac{1}{d}tn^T\right)K^{-1}$<br/>the homography matrix $\hat{H}$ between the two camera coordinate systems (ignoring intrinsic effects) is$\hat{H}=R + \frac{1}{d}tn^T$ | All feature maps are warped into different frontoparallel planes of the reference camera to form N feature volumes ${V_{i}}_{i = 1}^{N}$ |
+
+- **Cost Volume Construction**
+
+  - **Input**: Extracted feature maps $\{F_{i}\}_{i = 1}^{N}$, camera parameters $\{K_{i}, R_{i}, t_{i}\}_{i = 1}^{N}$ of the input cameras.
+  - **Process**:
+      - **Differentiable Homography**: All feature maps are warped into different frontoparallel planes of the reference camera to form $N$ feature volumes $\{V_{i}\}_{i = 1}^{N}$. The coordinate mapping is $x' \sim H_{i}(d) \cdot x$, where $H_{i}(d)=K_{i} \cdot R_{i} \cdot\left(I-\frac{\left(t_{1}-t_{i}\right) \cdot n_{1}^{T}}{d}\right) \cdot R_{1}^{T} \cdot K_{1}^{T}$.
+      - **Cost Metric**: A variance - based cost metric $M$ aggregates the $N$ feature volumes $\{V_{i}\}_{i = 1}^{N}$ into a single cost volume $C$. $C=\mathcal{M}(V_{1},\cdots,V_{N})=\frac{\sum_{i = 1}^{N}(V_{i}-\overline{V_{i}})^2}{N}$, with $\overline{V_{i}}$ being the average volume among all feature volumes.
+      - **Cost Volume Regularization**: A multi - scale 3D CNN (akin to a 3D version of UNet) refines the cost volume $C$ to generate a probability volume $P$ for depth inference. After the first 3D convolutional layer, the 32 - channel cost volume is reduced to 8 - channel, and the number of convolutions in each scale changes from 3 to 2 layers. The last convolutional layer outputs a 1 - channel volume, followed by a softmax operation along the depth direction for probability normalization.
+
+  - **Output**: Probability volume $P$. The cost volume in this context is constructed based on the frustum of the reference camera. It implicitly encodes camera geometries in the network to build 3D cost volumes from 2D image features, which is crucial for depth map inference.
+
+
+- **Depth Map Generation**
+
+  - **Input**: Probability volume $P$, reference image $I_1$.
+
+  - **Process**:
+
+      - **Initial Estimation**: The depth map $D$ is computed as the expectation value along the depth direction, $D=\sum_{d = d_{min}}^{d_{max}} d \times P(d)$.
+
+        ![image-20250502224503930](assets/image-20250502224503930.png)
+
+      - **Probability Map**: The quality of a depth estimation $\hat{d}$ is defined by the probability sum over the four nearest depth hypotheses.
+
+      - **Depth Map Refinement**: A depth residual learning network is employed. The initial depth map and the resized reference image are concatenated as a 4 - channel input, passed through three 32 - channel 2D convolutional layers followed by one 1 - channel convolutional layer to learn the depth residual. The initial depth map is added back after pre - scaling to $[0, 1]$ and post - scaling back.
+
+  - **Output**: Refined depth map.
+
+
+- **Loss Calculation**
+
+  - **Input**: Ground truth depth map, initial depth map $\hat{d}_{i}$, refined depth map $\hat{d}_{r}$.
+
+  - **Process**: The loss function is $Loss=\sum_{p \in p_{valid}} \vert d(p)-\hat{d}_{i}(p)\vert+\lambda \cdot \vert d(p)-\hat{d}_{r}(p)\vert$, where $p_{valid}$ is the set of valid ground truth pixels, $d(p)$ is the ground truth depth value of pixel $p$, and $\lambda = 1.0$ in experiments.
+
+  - **Output**: Loss value for training the network. 
+
+##### Improvements
+
+- **Analyze per-pixel confidence intervals** && Narrow down the sampling range based on uncertainty
+
+  | Coarse-to-fine Sampling                                      | Cascaded Depth Prediction                                    |
+  | ------------------------------------------------------------ | ------------------------------------------------------------ |
+  | ![image-20250502225415797](assets/image-20250502225415797.png) | ![image-20250502225918619](assets/image-20250502225918619.png) |
+
+- **Point - based Multi - View Stereo Network**
+
+  | ---                                                          | ---                                                          |
+  | ------------------------------------------------------------ | ------------------------------------------------------------ |
+  | ![image-20250502234705562](E:\GITHUB\3DV\Note\assets\image-20250502234705562.png) | Represent the scene with point cloud, which is suitable for sparse occupancy and memory - efficient. First, estimate a low - resolution depth map with existing methods, then unproject to get the initial point cloud. The goal is to refine the input depth map by moving the unprojected points along the camera direction. The flow prediction is calculated as the expected offset, such as $Delta d_{p}=E(ks)=\sum_{k = - m}^{m}ks\times Prob(\tilde{p}_{k})$ |
+
+- **Depth - Normal Consistency**
+      - **Normal Estimation as Auxiliary Loss**: Estimate the normal along with the depth map. Using normal estimation as an auxiliary loss in the depth - map prediction process has shown to be quite effective.![image-20250502235106227](assets/image-20250502235106227.png)
+          - **Refine Depth from Normal**: Assume that pixels within a local neighborhood lie on the same tangent plane, expressed as $\vec{n}^{T}(p - p_{i}) = 0$. Based on this, the depth of neighbor pixels can be derived from the current pixel normal. For example, $z_{i\to j}'=\frac{n_{ix}x_{j}+n_{iy}y_{j}+n_{iz}z_{j}}{(u_{i}-u_{0})n_{ix}/f_{0}+(v_{i}-v_{0})n_{iy}/f_{0}+n_{iz}}$, where $\vec{n}=(n_{ix},n_{iy},n_{iz})$ is the normal vector, $(x_{j},y_{j},z_{j})$ are the coordinates of the neighbor pixel, and $(u_{i},v_{i})$ and $(u_{0},v_{0})$ are related to the camera's optical properties and pixel coordinates. This method regularizes the depth by normals to improve depth accuracy and surface smoothness. ![image-20250502235132432](assets/image-20250502235132432.png)
+
+> Summary of learning based MVS: Deep volumetric stereo has the potential to achieve more robust matching and more complete 3D reconstruction. However, volume - based methods face a significant drawback in terms of computational efficiency. This is mainly because the 3D target scenes they deal with are often sparse, resulting in unnecessary computations over large volumes of empty or redundant space. To address this issue, adaptive sampling emerges as a viable solution. By intelligently adjusting the sampling process according to the characteristics of the scene, it can enhance both computational efficiency and the quality of reconstruction. Additionally, normal prediction, which is relatively easier compared to depth prediction, can play a crucial role. Incorporating normal prediction into the depth - estimation process can help improve depth accuracy and smoothness, further refining the overall 3D reconstruction results. 
+
+### 3.4 **NeRF**: Neural Radiance Field [Lecture 6]
+
+#### 3.4.1 Implicit Representation
+
+The difference of implicit and  explicit representation:
+
+![image-20250503105158082](assets/image-20250503105158082.png)
+
+![image-20250503105142716](assets/image-20250503105142716.png)
+
+> 2 ways of implicit representation
+
+- Signed Distance Field (SDF) maps each 3D points p to it’s signed distance to the object surface S. The sign is positive if the P is inside the object, and negative otherwise.  $S D F(p)=sign(p) \cdot min _{q \in \mathcal{S}}\| p-q\|$
+
+- Mixture of Gaussians represents a shape as a mixture of local implicit functions (3D gaussians)  
+  $$
+  F(x, \Theta)=\sum_{i \in[N]} f_{i}\left(x, \theta_{i}\right)\\ f_{i}\left(x, \theta_{i}\right)=c_{i} exp \left( \sum _{d\in \{ x,y,z\} } \frac{-\left( p_{i, d}-x_{d}\right)^{2}}{2 r_{i, d}^{2}}\right)
+  $$
+  ![image-20250503105944522](assets/image-20250503105944522.png)
+
+  - ! [important] **Not all complex shapes can be efficiently / accurately represented with simple primitives**
+
+![image-20250503110216798](assets/image-20250503110216798.png)
+
+![image-20250503110327309](assets/image-20250503110327309.png)
+
+#### 3.4.2 Overview
+
+When focusing about 3D scene rendering, the material, lighting and geometry should be taken into consideration. Camera that take the scene's photo is defined by intrinsics and extrinsics (6DoF). The high level idea of neuaral rendering is to use a neural network to encodes entire scene description, lighting, materials, etc. And then use the rendering equation to get the image given view point. 
+$$
+L_o(\mathbf{x}, \, \omega_o, \, \lambda, \, t) \, = \, L_e(\mathbf{x}, \, \omega_o, \, \lambda, \, t) \, + \, \int_{\Omega} f_r(\mathbf{x}, \, \omega_i, \, \omega_o, \, \lambda, \, t) \, L_i(\mathbf{x}, \, \omega_i, \, \lambda, \, t) \, (\omega_i \, \cdot \, \mathbf{n}) \, \, \mathrm{d} \, \omega_i
+$$
+However the direct use of volume representation leads to horrible storage requirements. 
+
+![image-20250503113557054](assets/image-20250503113557054.png)
+
+NeRF uses an implicit function to replace the volume representation, and track light emission along different directions.
+$$
+\mathcal{F}_{\pi }(x,y,z,\theta, \phi)  = (r,g,b,\sigma)
+$$
+There are 2 general idea behind NeRF: The appearance of the surface will be observed at views along the camera ray && If we have a light transport model from the surface along the ray to the pixels, we will know the pixel color. 
+
+##### Volumetric Light Transport Model
+
+![image-20250503113748994](assets/image-20250503113748994.png)
+
+Transmission in the volumetric light transport model is related to the attenuation of light as it passes through the volume. The attenuation coefficient $\sigma$ (also representing transparency) is a key factor. A higher $\sigma$ means more attenuation of light. Mathematically, the transparency of a ray segment of length $t$ is described by the **Beer - Lambert's Law**: $\alpha(t)=1 - exp(−\sigma t)$. Here, $\alpha(t)$ represents the opacity of the ray segment at length $t$. As $t$ increases or $\sigma$ increases, the opacity $\alpha(t)$ increases, indicating more light is being attenuated. **In - Scatter & Emission**: In - scatter refers to the process where light scatters within the volume, and emission is about the light being emitted from points within the volume. The emission radiance is denoted as $c$. The total light emitted along a ray segment from $t = 0$ to $t=\delta$ is calculated as $\int_{0}^{\delta}(1-\alpha(t)) c(t) dt$. When $c(t)$ is assumed to be a constant $c$, we can approximate this integral. First, substitute $\alpha(t)=1 - exp(−\sigma t)$ into the integral:
+$$
+\begin{align*}
+\int_{0}^{\delta}(1-(1 - exp(−\sigma t))) c dt&=\int_{0}^{\delta}exp(−\sigma t) c dt\\
+&=c\int_{0}^{\delta}exp(−\sigma t) dt\\
+\end{align*}
+$$
+Integrating $exp(−\sigma t)$ with respect to $t$ gives 
+$$
+\left[-\frac{1}{\sigma}exp(−\sigma t)\right]_{0}^{\delta}=-\frac{1}{\sigma}(exp(−\sigma \delta)-1)=\frac{1}{\sigma}(1 - exp(−\sigma \delta))
+$$
+So the light emitted is $\frac{c}{\sigma}(1 - exp(−\sigma \delta))$, which can also be written as $\alpha(\delta)\left(\frac{c}{\sigma}\right)$ using the Beer - Lambert's Law relationship. In practice, for numerical computation, we use ray marching to discretize the radiance integration. For a single point along the ray, the light intensity $I_{1}$ after passing through that point is given by $I_{1}=\alpha_{1}\left(\frac{c_{1}}{\sigma_{1}}\right)$, where $\alpha_{1}$ is the opacity of the point, $c_{1}$ is the predicted emission radiance at that point, and $\sigma_{1}$ is the attenuation coefficient at that point. When there are multiple points, the light intensity at each subsequent point takes into account the light from previous points. For example, for two points, $I_{2}=\alpha_{2}\left(\frac{c_{2}}{\sigma_{2}}\right)+(1 - \alpha_{2})I_{1}$. The term $(1 - \alpha_{2})I_{1}$ represents the light that is transmitted from the first point to the second point. In general, for $n$ points along a ray, the transmittance 
+$$
+T_{i}=\prod_{j = i + 1}^{n}(1-\alpha_{j})=exp \left(-\sum_{j = i + 1}^{n} \sigma_{j} \delta_{j}\right)
+$$
+ and the final radiance of the ray 
+$$
+I=\sum_{i} T_{i} \alpha_{i}\left(\frac{c_{i}}{\sigma_{i}}\right)
+$$
+This formula sums up the contributions of light from all the points along the ray, considering both the emission from each point and the attenuation and transmission of light from previous points.
+
+#### 3.4.3 Pipeline
+
+$$
+\text{What NeRF learns}\\ 
+\left(\alpha_{i}, \frac{c_{i}}{\sigma_{i}}\right)=F_{\Theta}(x, y, z, \theta, \phi)\\
+I=\sum_{i}\prod_{j = i + 1}^{n}(1-\alpha_{j}) \alpha_{i}\left(\frac{c_{i}}{\sigma_{i}}\right)
+$$
+
+![image-20250503115631311](assets/image-20250503115631311.png)
+
+![image-20250503115921961](assets/image-20250503115921961.png)
+
+- 2 Trick of implemention
+
+  | Positional Encoding                                          | Hierarchical Sampling - Fine Sampling                        |
+  | ------------------------------------------------------------ | ------------------------------------------------------------ |
+  | ![image-20250503120503702](assets/image-20250503120503702.png) | ![image-20250503120442040](assets/image-20250503120442040.png) |
+
+- **Summary**
+
+  ![image-20250503120558980](E:\GITHUB\3DV\Note\assets\image-20250503120558980.png)
+
+#### 3.4.4 Extentions
+
+> Thought: Remaining 2 main issue of the original NeRF: 
+>
+> • Handling dynamic scenes when acquiring calibrated views $\to$ D-NeRF: Neural Radiance Fields for Dynamic Scenes
+>
+> • One network trained per scene - no generalization $\to$ PixelNeRF
+
+##### DNeRF
+
+![image-20250503120830073](assets/image-20250503120830073.png)
+
+![image-20250503121800130](assets/image-20250503121800130.png)
+
+The scene is represented in a 6D radiance field, incorporating 3D spatial coordinates $(x, y, z)$, a time coordinate $t$, and viewing direction $(\theta, \phi)$. The deformation network $\Psi_{t}$ plays a crucial role. It predicts the deformation field between the scene at time $t$ and the canonical space ($t = 0$) and is defined as
+
+$$
+\Psi_{t}(x, t)=
+\begin{cases}
+\Delta x, & \text{if } t\neq0 \\
+0, & \text{if } t = 0
+\end{cases}
+$$
+where $\Delta x$ is the deformation vector. This network allows D - NeRF to model scene changes over time.
+
+The canonical network $\Psi_{x}$ predicts the color $c$ and density $\sigma$ in the canonical configuration. Given a 3D point $x$ and viewing direction $d$, it outputs:$\Psi_{x}(x, d)\mapsto(c, \sigma)$
+These values are essential for determining the appearance and transparency of points in the scene. Volumetric rendering in D - NeRF is similar to that in NeRF but adjusted for dynamic scenes. The color of a ray $C(p, t)$ passing through the scene at time $t$ is calculated as:
+$$
+C(p, t)=\int_{h_{n}}^{h_{f}} \mathcal{T}(h, t) \sigma(p(h, t)) c(p(h, t), d) dh\\
+\text{where } p(h, t)=x(h)+\Psi{t}(x(h), t)
+$$
+The transmittance $\mathcal{T}(h, t)$ along the ray from the near plane $h_{n}$ to the current position $h$ is defined as:$\mathcal{T}(h, t)=exp\left(-\int_{h_{n}}^{h} \sigma(p(s, t)) ds\right)$ The values of$c(p(h, t), d)$ and $\sigma(p(h, t))$ are obtained from the canonical network $\Psi_{x}$ after deforming the point using $\Psi_{t}$. In the overall D-NeRF rendering pipeline, for each pixel in the output image at a specific time $t$, a ray is cast from the camera. The ray passes through the 6D radiance field. First, the deformation network $\Psi_{t}$ deforms the points along the ray according to the time - dependent deformation field. Then, the canonical network $\Psi_{x}$ predicts the color and density values for the deformed points. Finally, the volumetric rendering equation is used to integrate the contributions of these points along the ray, considering the transmittance, to obtain the final color of the pixel. This process is repeated for all pixels in the image to generate the rendered image at time $t$. Thus, D-NeRF's rendering pipeline effectively combines deformation, canonical representation, and volumetric rendering to handle dynamic scenes and enable the synthesis of novel views for scenes with moving or deforming objects. 
+
+##### PixelNeRF
+
+![image-20250503123654415](assets/image-20250503123654415.png)
+
+The traditional NeRF optimizes the radiance field of each scene independently and requires many calibrated views. It also uses a canonical coordinate frame. PixelNeRF, introduces several key improvements. It trains across multiple scenes to learn a scene prior. This allows the model to generalize better and make more accurate predictions even with a sparse set of views, which is crucial for the few - shot view synthesis task. Mathematically, while NeRF represents a 5D mapping from spatial and viewing direction coordinates $(x, y, z, \theta, \phi)$ to color and density $(RGB, \sigma)$                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                $(x, y, z, \theta, \phi)\xrightarrow{F_{\Theta}}(RGB, \sigma)$, PixelNeRF builds on this concept but with a different approach. It predicts a NeRF representation in the camera coordinate system, which simplifies the process and makes it more adaptable to the input images. In its architecture, PixelNeRF uses a CNN encoder to extract image features from the input images. These features are then fed into an MLP along with the location information. The MLP outputs the color and opacity values. This integration of CNN - based feature extraction and MLP - based prediction allows PixelNeRF to incorporate a variable number of posed input views. For example, if only one or two images are available, the model can still leverage the learned scene prior and the features from these images to generate a reasonable NeRF representation.
+
+##### DreamDiffusion: Text to 3D synthesis
+
+![image-20250503163148168](assets/image-20250503163148168.png)
+
+DreamFusion uses a pretrained 2D text - to - image diffusion model to perform text - to - 3D synthesis. It initializes a neural radiance field (NeRF) randomly. During training, it samples random camera and light positions. The NeRF renders 2D images from these viewpoints. The Score Distillation Sampling (SDS) loss is computed based on the difference between the noise predicted by the diffusion model for these rendered (noisy) images and the injected noise. This loss is used to optimize the NeRF parameters via gradient descent. By minimizing this loss over many iterations (e.g., 15,000), the NeRF is trained to generate 2D renderings that match what the diffusion model expects for the given text prompt, ultimately resulting in a 3D model that can be viewed, relit, or composited in 3D environments. 
+
+### 3.5 **3DGS**: 3D Gaussian Splatting
+
+#### 3.5.1 Overview
+
+3D Gaussian Splatting (3DGS) is a method for representing and rendering radiance fields. Compared to NeRF, which parametrize radiance densely, its idea is to parameterize the radiance field sparsely, only where the density is non-zero. Instead of representing the entire 3D space densely as in some traditional methods or like the full-volume representation in early neural rendering approaches, 3DGS uses 3D Gaussian blobs floating in space. Mathematically, a 3D Gaussian function is defined as $\mathcal{G}_{V}(x - p)=\frac{1}{2 \pi|V|^{\frac{1}{2}}} e^{-\frac{1}{2}(x - p)^{T} V^{-1}(x - p)}$, where $x$ is the coordinate in 3D space, $p$ is the mean of the Gaussian, and $V$ is the covariance matrix. In 3DGS, these Gaussians are used to represent the radiance field. Each Gaussian blob has its own set of parameters ($p$, $V$) that determine its position, shape, and the contribution to the radiance field.
+
+| GS representation                                            | Volume randering?                                            |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20250503165336285](assets/image-20250503165336285.png) | ![image-20250503165431284](E:\GITHUB\3DV\Note\assets\image-20250503165431284.png) |
+
+#### 3.5.2 Pipeline
+
+![image-20250503165647372](assets/image-20250503165647372.png)
+
+- **Initialization**: The process starts with an initialization step. This may involve using Structure from Motion (SfM) points to determine the initial positions and properties of the 3D Gaussians. The SfM points provide an initial estimate of the 3D structure of the scene, which serves as a basis for placing the Gaussian blobs.
+
+- **Density Control**: 3DGS focuses on areas of non - zero density. The density of the Gaussians is carefully controlled. If a region has a higher density, more Gaussians are placed or adjusted to better represent the radiance in that area. This density - based placement of Gaussians is a key difference from methods like NeRF, which represent the entire volume.
+
+- **Projection**: When rendering, the 3D Gaussians are projected onto the 2D image plane. Since Gaussians are closed under affine transforms, an affine mapping $\Phi = Mx + p$ (such as the cam2world matrix) can be applied. For a 3D Gaussian $\mathcal{G}_{V}(x - p)$, after the affine mapping, it becomes $\mathcal{G}_{V}\left(\Phi^{-1}(u)-p\right)=\frac{1}{\left|M^{-1}\right|} \mathcal{G}_{M V M^{T}}(u-\Phi(p))$, where $u$ is the coordinate in the new (projected) space. And when integrating along an axis, $\int_{\mathbb{R}} \mathcal{G}_{V}^{3}(x - p) dx_{2}=\mathcal{G}_{\hat{V}}^{2}(\hat{x}-\hat{p})$, which shows how the 3D Gaussian projects to a 2D Gaussian on the image plane. We can **Using Rasterization Instead of Volume Rendering**!
+
+  ![image-20250503165724663](assets/image-20250503165724663.png)
+
+- **Rasterization**: Instead of using volume rendering as in NeRF, 3DGS often uses rasterization. Rasterization is a process of converting the 3D Gaussians into 2D pixels on the image plane. This can be more computationally efficient in some cases, especially when dealing with scenes where the radiance field can be well - approximated by a sparse set of Gaussians.
+
+- **Adaptive Operation and Gradient Flow**: 3DGS includes adaptive operations to optimize the representation of the radiance field. These operations can adjust the parameters of the Gaussians (such as their positions, shapes, and colors) based on the error between the rendered image and the ground - truth (if available). The gradient flow is used to update these parameters during the training process, similar to how neural networks are trained.
+
+#### 3.5.3 Comparison with NeRF
+- **Representation**:
+    - NeRF represents the radiance field as a continuous 5D function $(x, y, z, \theta, \phi)\to(RGB,\sigma)$, where $(x, y, z)$ are spatial coordinates, $(\theta, \phi)$ are viewing direction coordinates, and $(RGB,\sigma)$ are the output color and density. It densely parameterizes the entire volume of the scene.
+    - 3DGS, on the other hand, sparsely parameterizes the radiance field using 3D Gaussian blobs. It only focuses on regions with non - zero density, which can lead to more efficient representation, especially for scenes with large empty spaces.
+    
+- **Rendering Method**:
+    - NeRF uses volume rendering with ray marching. The final radiance of a ray is calculated as $I=\sum_{i} T_{i} \alpha_{i}\left(\frac{c_{i}}{\sigma_{i}}\right)$, where $T_{i}=\prod_{j = i + 1}^{n}(1-\alpha_{j})=exp \left(-\sum_{j = i + 1}^{n} \sigma_{j} \delta_{j}\right)$. This involves integrating the contributions of multiple points along the ray through a series of complex calculations.
+    - 3DGS uses rasterization, which is generally faster for scenes that can be well - represented by a sparse set of Gaussians. Rasterization directly projects the 3D Gaussians onto the 2D image plane, simplifying the rendering process.
+    
+- **Training and Efficiency**:
+    - NeRF requires training on a per - scene basis and often takes a relatively long time to train due to the complexity of volume rendering and the need to optimize a large number of parameters for each scene. For example, Mip - NeRF360 takes 48h to train.
+    
+    - 3DGS can achieve relatively high - speed rendering with competitive PSNR values. For instance, some 3DGS - based methods can train in a few minutes (e.g., 6 minutes or 7 minutes) and achieve PSNR values comparable to or better than some NeRF - based methods, while also having high rendering frame rates (e.g., 135fps or 93fps).
+    
+      ![image-20250503170108336](assets/image-20250503170108336.png)
+
+## **Chapter 4 3D Generation** [Lecture 7, 8, 9]
+
+> This chapter focus on different techs that recover or generate 3D geometry, section 4.1 talks about how 3D geometry (specially point cloud) is generated from images and section 4.2 talks about how mesh is recovered from coarse point cloud representation. Section 4.3 includes modern pipelines that generate 3D object.
+
+### 4.1 **Single image to 3D** [Lecture 7]
+
+#### 4.1.1 Overview
+
+| Task                                      | ---                                                          | ---                              |
+| ----------------------------------------- | ------------------------------------------------------------ | -------------------------------- |
+| Single image to depth map                 | ![image-20250503173809713](assets/image-20250503173809713.png) | https://arxiv.org/pdf/2012.06980 |
+| Single image to 3D point cloud generation | ![image-20250503173751064](E:\GITHUB\3DV\Note\assets\image-20250503173751064.png) | https://arxiv.org/pdf/1612.00603 |
+| Single image to implicit field function   | ![image-20250503173550434](E:\GITHUB\3DV\Note\assets\image-20250503173550434.png) | https://arxiv.org/pdf/1802.05384 |
+
+
+
+#### 4.1.2 Synthesis-for-Learning Pipeline
+
+For the task that takes single image as input and outputs a 3D object, information are not sufficient. Training deep neural network to do the inference needs  lot of data with labels. In this case, we need many image-3D shape pairs. The fist solution is to use ToF or stereo sensors(Kinect, RealSence) and LiDAR to get real 3D data. The second solution is to develop a synthesis pipeline. By rnedering object form the shape dataset, we can get synthesis 2D images - 3D shape pairs for the training. 
+
+![image-20250503173130905](assets/image-20250503173130905.png)
+
+```txt
+ShapeNet: http://www.shapenet.org
+Objaverse-XL (10M CAD): https://objaverse.allenai.org/
+```
+
+#### 4.1.2 Single-image to Point Cloud
+
+![image-20250503180514325](assets/image-20250503180514325.png)
+
+##### Pipeline
+
+![image-20250503180916419](assets/image-20250503180916419.png)
+
+Point cloud has permutation invariance thus loss needs to be invariant to ordering of points! Following are 2 popular distance metric for measuring 2 points sets.
+
+- **Earth Mover's Distance (EMD)**: Since point clouds are sets of orderless points, traditional $L_{2}$ loss does not work. EMD is used to measure the distance between two point sets. It finds a 1 - 1 correspondence between point sets. $d_{EMD}(S_{1}, S_{2})=\min_{\phi: S_{1}\to S_{2}}\sum_{x\in S_{1}}\|x - \phi(x)\|_{2}$, where $\phi: S_{1}\to S_{2}$ is a bijection. EMD is continuous and differentiable except for a zero - measure set. Many algorithmic studies focus on fast EMD computation, and there are parallelizable implementations on CUDA, as well as fast approximated EMD implementations.
+- **Chamfer Distance (CD)**: Another popular metric for point clouds. It is based on the nearest neighbor correspondence for each point. The formula is $d_{CD}(S_{1}, S_{2})=\sum_{x\in S_{1}}\min_{y\in S_{2}}\|x - y\|_{2}^{2}+\sum_{y\in S_{2}}\min_{x\in S_{1}}\|x - y\|_{2}^{2}$. It is also used as a loss function in the learning process of single - image to point cloud reconstruction.
+- **Differences**
+   - **Calculation Principle**:
+      - CD simply sums the closest distances without considering a global optimal matching. It is a more local - based measure, looking at the nearest neighbor relationships for each individual point.
+      - EMD, on the other hand, finds an optimal global bijection \(\phi\) between the two point sets. It takes into account the overall distribution and matching of points, aiming for a more globally optimal alignment.
+   - **Sensitivity to Sampling**:
+      - CD is insensitive to sampling. Changes in the sampling density of the point clouds do not significantly affect its value, as it only focuses on the closest distances between individual points.
+      - EMD is sensitive to sampling. Since it depends on finding an optimal one - to - one mapping, variations in the number or distribution of points (sampling) can greatly influence the calculated distance. 
+
+Inspiration of the 2 branch architecture:
+
+| Up sampling                                                  | FC                                                           |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20250503193612661](assets/image-20250503193612661.png) | ![image-20250503193649681](E:\GITHUB\3DV\Note\assets\image-20250503193649681.png) |
+
+| 2 branch architecture                                        | visualization of 2 branch output                             |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20250503192807417](assets/image-20250503192807417.png) | ![image-20250503192841140](assets/image-20250503192841140.png) |
+
+The paper adopt a two - branch architecture (e.g., ConvNet + FC/UpConv), where different branches are designed to handle different aspects of the point cloud generation. The Upconv branch learns a smooth surface parameterization from 2D to 3D consistent across objects. However the FC branch finds more ntricate structures which are more non-smooth and change more.
+
+| Design of Upconvolution Branch                               | Visualization                                                |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20250503193256863](assets/image-20250503193256863.png) | ![image-20250503193107405](assets/image-20250503193107405.png) |
+
+#### 4.1.3 Single-image to Mesh
+
+Designing Loss for Edge Prediction is Hard: Ambiguity
+
+![image-20250503195122593](assets/image-20250503195122593.png)
+
+One option is to first build a high-resolution intermediate representation, and then convert the point cloud to mesh. (Section 4.2 )
+
+##### Editing-based Mesh Modeling
+
+Key idea: starting from an established mesh and modify it to become the target shape.
+
+![image-20250503195907447](assets/image-20250503195907447.png)
+
+Loss selection is crucial!
+
+- **Vertices Distance Metrics**:
+    - **Earth Mover's Distance (EMD)**:  $d_{EMD}(S_{1}, S_{2})=\min_{\phi: S_{1}\to S_{2}}\sum_{x\in S_{1}}\|x - \phi(x)\|_{2}$. This metric helps in measuring the dissimilarity between the two sets of vertices.
+    - **Chamfer Distance (CD)**: Use the CD to measure the distance between vertex sets. $d_{CD}(S_{1}, S_{2})=\sum_{x\in S_{1}}\min_{y\in S_{2}}\|x - y\|_{2}^{2}+\sum_{y\in S_{2}}\min_{x\in S_{1}}\|x - y\|_{2}^{2}$. 
+- **Uniform Vertices Distribution**: Penalize flying vertices and overlong edges with the loss function $L_{unif}=\sum_{p}\sum_{k\in N(p)}\|p - k\|_{2}^{2}$, where $p$ represents a vertex and $N(p)$ is the set of its neighboring vertices. This encourages equal edge lengths between vertices and helps in obtaining high - quality recovered 3D geometry.
+- **Mesh Smoothness**: Encourage the intersection angles of faces to be close to 180 degrees using the loss $L_{smooth}=\sum_{i}(\cos\theta_{i}+1)^{2}$, where $\theta_{i}$ is the intersection angle of faces. This promotes a smoother mesh surface.
+- **Normal Loss**: Assume that vertices within a local neighborhood lie on the same tangent plane. Regularize the edge to be perpendicular to the underlying ground - truth vertex normal. One approach to find the vertex normal is to use the nearest ground - truth point normal as the current vertex normal. The loss penalizes the deviation of the edge direction from being perpendicular to the vertex normal.
 
 
 
 
 
-
-
-什么是视差->使用视差来估计图像深度
-
-![image-20250430195352274](E:\GITHUB\3DV\Note\assets\image-20250430195352274.png)
+![image-20250503200539788](assets/image-20250503200539788.png) 
 
 
 
 
 
-### 3.1 SFM: Structure from Motion
+##### Summary
 
-Hight level idea: SFM is an algorithm that takes 2 or more images as input, reconstruct the camera pose and reconstruct the position of 3D points.
+The synthesis-for-learning pipeline utilizes easily-obtainable synthetic data to tackle challenging 3D visual understanding tasks. It has been demonstrated that generating a 3D point cloud from a single image is feasible when employing properly defined set metrics like Earth Mover's Distance (EMD) and Chamfer Distance (CD). However, there exists natural ambiguity in single-image to 3D conversion. Regarding single - image to mesh, it can be accomplished through template deformation, yet mesh reconstruction demands more regularizations to ensure accurate and high-quality results. 
 
-1. 提取特征点并进行匹配
-2. 选择一组场景（两张图片），基于这两张图片估计相机位姿，并重建三维坐标点
-3. 用[Bundle Adjustment](https://zhida.zhihu.com/search?content_id=166307793&content_type=Article&match_order=1&q=Bundle+Adjustment&zhida_source=entity)进行优化
-4. 对于剩下每一个的场景（图片），重复2-3步进行三维重建
+### 4.2 **Surface Reconstruction: Mesh from PC** [Lecture 8]
 
-最好还补充一些SLAM算法什么的paper
+The problem definition for this section is to reconstruct the triangle mesh surface given the original (noisy) (with or without normals ) point cloud.
 
-Bundle Adjustment是指在结构从运动（SfM）和同步定位与地图构建（SLAM）等任务中，通过最小化重投影误差来优化相机姿态和3D点坐标的过程。具体来说，它是通过调整相机的外参（姿态和位置）以及3D点的位置，使得每个3D点在不同视角下的**重投影误差之和最小化**。这个过程通常采用最小二乘法进行求解，是这些任务中获得高精度三维重建和相机姿态的关键步骤.
+Some Desired Properties of the Algorithm: 
 
-这一部分结合知乎第八（已知参数的两个相机从双目相机到视察）第九（SFM）+论文SFM+课堂PPT
+- Fast: The input point cloud may be large. We expect the computation to be fast.
+- Robust: May recover the underlying surface structure even when the input point cloud is noisy
+- Output mesh is desired to satisfy some geometric constraints
 
-### 3.2 MVS: Muti-View Stereo
+| Manifold                                                     | Watertight                                                   |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20250503204119581](assets/image-20250503204119581.png) | ![image-20250503204131227](assets/image-20250503204131227.png) |
 
-yiliPPT+苏昊PPT+知乎第十讲+lybPPT
+##### Explicit Algorithm
+
+**Ball - Pivoting Algorithm**
+
+- **Input**: A point cloud and a hyper - parameter $\rho$.
+
+- **Assumption**: Input points are dense enough such that a ball of radius $\rho$ cannot pass through the surface without touching the points.
+
+- **Principle for face formation**: Three points form a triangle if a ball of radius $\rho$ touches them without containing any other points.
+
+  ![image-20250503204246334](E:\GITHUB\3DV\Note\assets\image-20250503204246334-1746288750540-4.png)
+
+- **Procedure**:
+
+  - Start with a corner point and a $\rho$-ball.
+
+  - Verify potential edges (triangles) in the $\rho$-neighborhood.
+
+  - The ball pivots around an edge (triangle) until it touches another point, forming another triangle.
+
+    | ---                                                          | ---                                                          |
+    | ------------------------------------------------------------ | ------------------------------------------------------------ |
+    | ![image-20250503204317244](assets/image-20250503204317244.png) | ![image-20250503204509458](assets/image-20250503204509458.png) |
+
+    
+
+  - The process continues until all reachable edges have been tried. Then start from another seed triangle until all points have been considered.
+
+- **Radius - related issues**:
+
+  - **Appropriate radius**: It can correctly connect points to form a proper mesh.
+
+  - **Radius too small**: Some edges will not be created, leaving holes.
+
+  - **Large radius**: Some points will not be reached when the curvature of the manifold is larger than $1/\rho$.
+
+    ![image-20250503204345312](E:\GITHUB\3DV\Note\assets\image-20250503204345312-1746288750539-2.png)
+
+- **Iterative Approach**: Using multiple radii, iteratively connect the points. Small radii capture high frequencies, and large radii close holes.
+
+  ![image-20250503204601412](E:\GITHUB\3DV\Note\assets\image-20250503204601412-1746288750539-1.png)
+
+- **Ambiguous Structures**: Traditional rule - based methods (like the ball - pivoting algorithm) cannot handle ambiguous structures (e.g., thin structures & adjacent parts) well. Defining a rule for structure estimation is sometimes hard, and no single $\rho$ value can separate some complex point cloud structures.
+
+  ![image-20250503204544013](E:\GITHUB\3DV\Note\assets\image-20250503204544013-1746288750540-3.png)
+
+- **Learning - Based Method**: Train a network to filter out incorrect connections and utilize the Intrinsic - Extrinsic Ratio to guide the training.
+
+- **Pros and Cons**:
+
+  - **Pros**: Linear complexity (fast) and no dependence on normals.
+  - **Cons**: Can lead to non - manifold situations, and there is no watertight guarantee. Regarding robustness, learning can improve it, but current learning - based methods still do not work well when the sampling density is low.
+
+##### Implicit Algorithms
+
+- For a 3D space, we have:
+  - Interior: $F(x, y, z)<0$
+  - Exterior: $F(x, y, z)>0$
+  - Surface: $F(x, y, z)=0$ (zero set, zero iso - surface)
+  - Example implementation: Signed Distance Function (SDF), $F(x, y, z)=$ distance to the surface.
+
+- **Two basic steps** of **Implicit Meshing Algorithm**
+  - Estimate an implicit field function from data.
+  - Extract the zero iso - surface.
+
+>Estimate an implicit field function from data.
+
+1. **Radial Basis Functions (RBF)**
+
+   - **Definition**: Radial basis functions $\phi_{c}(x)$: function value depends only on the distance from a center point $c$, i.e., $\phi_{c}(x)=\phi(\|x - c\|)$. Use a weighted sum of radial basis functions to approximate the shape: $f(x)=\sum_{i = 1}^{n}\omega_{i}\phi(\|x - x_{i}\|)+p(x)$, where $p$ is a polynomial of low degree.
+
+     ![image-20250503204736762](E:\GITHUB\3DV\Note\assets\image-20250503204736762-1746288750540-6.png)
+
+   - **Constraints**: $f(x_{i}) = 0$ is not enough as it may get the trivial solution $f(x)\equiv0$. So we use normal to **add off - surface points**:
+
+     - $f(x_{i}) = 0$
+
+     - $f(x_{i}+\lambda\vec{n}_{i})=\lambda$
+
+     - $f(x_{i}-\lambda\vec{n}_{i})=-\lambda$
+
+       ![image-20250503204756241](E:\GITHUB\3DV\Note\assets\image-20250503204756241-1746288750540-5.png)
+
+   - Consistent Normals are Required
+
+     ![image-20250503205446547](E:\GITHUB\3DV\Note\assets\image-20250503205446547-1746288750540-7.png)
+
+   - **Estimate Parameters Estimate Parameters**
+
+     ![image-20250503205721975](E:\GITHUB\3DV\Note\assets\image-20250503205721975-1746288750540-8.png)
+
+   - **Implementation Details**:
+
+     - Use triharmonic basis functions $\phi(r)=r^{3}$ for its extrapolation ability. Avoid using RBF with compact or local support (e.g., Gaussian density).
+     - A third - order polynomial is practically good.
+     - Do not need to use all the input data points as RBF centers. Use a greedy algorithm to select a subset of points. For noisy data, treat the linear equation as solving a linear square problem and add a smoothness term.
+
+   - **Pros and Cons**:
+
+     - **Pros**: Global definition, single function, globally optimal.
+     - **Cons**: Global definition leads to global optimization, which is slow.
+
+2. **Moving Least Squares (MLS)**
+
+   - Do purely local approximation of the SDF. The weights change depending on where we are evaluating.
+
+     ![image-20250503205912880](E:\GITHUB\3DV\Note\assets\image-20250503205912880-1746288750540-9.png)
+
+   - Polynomial least - squares approximation:
+
+     - For a general polynomial in 3D, $f\in\Pi_{k}^{3}: f(x, y, z)=a_{0}+a_{1}x + a_{2}y+a_{3}z+a_{4}x^{2}+a_{5}xy+\cdots+a_{*}z^{k}$, $f(x)=b(x)^{T}a$, where $a=(a_{1},a_{2},\cdots,a_{*})^{T}$ and $b(x)^{T}=(1,x,y,z,x^{2},xy,\cdots,z^{k})$.
+     - In MLS, we find $a$ that minimizes the weighted sum of squared differences: $a_{x}=\underset{a}{argmin}\sum_{m = 0}^{N - 1}\theta(\|x - c_{m}\|)(b(c_{m})^{T}a - d_{m})^{2}$
+
+     ![image-20250503215255595](E:\GITHUB\3DV\Note\assets\image-20250503215255595-1746288750540-10.png)
+
+   - **Weight Functions**:
+
+     - Gaussian: $\rho(r)=e^{-\frac{r^{2}}{h^{2}}}$, where $h$ is a smoothing parameter.
+
+       ![image-20250503215212459](E:\GITHUB\3DV\Note\assets\image-20250503215212459-1746288750540-12.png)
+
+     - Wendland function: Defined in $[0, h]$ and $\theta(r)=(1 - r/h)^{4}(4r/h + 1)$, $\theta(0)=1$, $\theta(h)=0$, $\theta'(h)=0$, $\theta''(h)=0$.
+
+     - Singular function: $\theta(r)=\frac{1}{r^{2}+\varepsilon^{2}}$, for small $\varepsilon$, weights are large near $r = 0$ (interpolation).
+
+     - The MLS function $F$ is continuously differentiable if and only if the weight function $\theta$ is continuously differentiable. In general, $F$ is as smooth as $\theta$.
+
+3. **Poisson Surface Reconstruction**
+
+   - **Poisson surface reconstruction (Kazhdan M, Bolitho M, Hoppe H. “Poisson surface reconstruction.” ESGP, 2006)**:
+     - **Advantages**: Robust to noise, adapts to the sampling density.
+     - **Disadvantages**: Over - smoothing.
+   - **Screened Poisson surface reconstruction (Kazhdan M, Hoppe H. “Screened poisson surface reconstruction.” ToG, 2013)**:
+     - **Advantages**: Sharper reconstruction, faster.
+     - **Disadvantages**: Assumes clean data.
+
+>Extract the zero iso - surface
+
+1. **Marching Cubes (3D) and Marching Squares (2D)**
+
+   - **2D Marching Square**:
+
+     - Give every cell a number based on which corners are true/false.
+     - Look up the contour in a look - up table and put the contour lines in the database.
+     - Determine the line end - points values and use linear interpolation to get a more accurate position.
+
+     ![image-20250503215042880](E:\GITHUB\3DV\Note\assets\image-20250503215042880-1746288750540-11.png)
+
+   - **3D Marching Cube**:
+
+     - There are $2^{8}=256$ cases in total. The first published version exploits rotation and inversion and only considers 15 unique cases.
+     - **Ambiguity**: Ambiguity can lead to holes.
+     - **Solution to Ambiguity**: Considering more cases in the look - up table by watching a larger context.
+
+     ![image-20250503215126275](E:\GITHUB\3DV\Note\assets\image-20250503215126275-1746288750540-13.png)
+
+![image-20250503215418061](E:\GITHUB\3DV\Note\assets\image-20250503215418061-1746288750540-14.png)
+
+1. **Using Neural Network to Approximate Implicit Field Function**
+
+   - **DeepSDF**:
+
+     ![image-20250503215502100](E:\GITHUB\3DV\Note\assets\image-20250503215502100-1746288750540-15.png)
+
+     - **Single Shape DeepSDF**: Use the network to overfit a single shape.
+     - **Coded Shape DeepSDF**: Use a latent code to represent a shape, so that the network can be used for multiple shapes.
+
+   - **Learning - Based Marching Cube**: Such as Deep Marching Cubes: Learning Explicit Surface Representations and Neural Dual Contouring.
+
+   - **Sign Agnostic Learning of Shapes from Raw Data**:
+
+     - Unsigned distance is easy to obtain (distance to the point cloud & triangle soup).
+
+     - Learn signed distance from unsigned distance ground - truth. Require a special loss function: $loss(\theta)=\mathbb{E}_{x\sim D_{\chi}}\tau(f(x;\theta),h_{\chi}(x))$, where $\chi\subset\mathbb{R}^{3}$ is the input raw data (e.g., a point cloud or a triangle soup), $f(x;\theta):\mathbb{R}^{3}\times\mathbb{R}^{m}\to\mathbb{R}$ is the learned signed function, $D_{\chi}$ is the distribution of the training samples defined by $\chi$, $h_{\chi}(x)$ is some unsigned distance measure to $\chi$, and $\tau:\mathbb{R}\times\mathbb{R}_{+}\to\mathbb{R}$ is a similarity function. For example, $\tau_{\ell}(a, b)=\|a|-b|^{\ell}$.
+
+       | Loss design                                                  | 2d result                                                    |
+       | ------------------------------------------------------------ | ------------------------------------------------------------ |
+       | ![image-20250503220036127](assets/image-20250503220036127.png) | ![image-20250503220005754](assets/image-20250503220005754.png) |
+
+     - There are two local minima in the loss function. We prefer the case where $f$ is a signed function and $|f|$ resembles $h_{\chi}(x)$ to use marching cube. We can pick a special weight initialization $\theta^{0}$ so that $f(x;\theta^{0})\approx\varphi(\|x\|-r)$ (signed distance function to an $r$ - radius sphere) to avoid convergence to the unsigned local minima. 
+
+### 4.3 **Modern 3D Generation Pipeline** [Lecture 9]
+
+#### 4.3.1 GAN
+
+#####  2D GAN
+
+![image-20250503225544389](E:\GITHUB\3DV\Note\assets\image-20250503225544389-1746288750540-16.png)
+
+GAN's learning Objective: Generate output that is indistinguishable from a ‘real’ example
+
+##### Pipeline
+
+![image-20250503225756045](E:\GITHUB\3DV\Note\assets\image-20250503225756045-1746288750540-17.png)
 
 
 
-### 3.3 Single image to 3D
+| Generator                                                    | Latent Vector Arithmetic                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20250503225836283](assets/image-20250503225836283.png) | ![image-20250503230120017](assets/image-20250503230120017.png) |
+
+Generator: Incrementally increase resolution via convolutions and upsampling layers.
+
+##### Issues in 3D GAN
+
+| GANs don’t maximize likelihood of dat                        | ---                                                          |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20250503230345060](assets/image-20250503230345060.png) | ![image-20250503230436008](assets/image-20250503230436008.png) |
+
+#### 4.3.2 Autoregressive Models
+
+##### 2D Autogressive Model 
+
+| Definition                                                   | 2d Pipeline                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20250503230632820](assets/image-20250503230632820.png) | ![image-20250503230610830](assets/image-20250503230610830.png) |
+
+##### Pipeline
+
+![image-20250503230812872](E:\GITHUB\3DV\Note\assets\image-20250503230812872-1746288750540-18.png)
+
+#### 4.3.3 Diffusion Models
+
+##### 2D Diffusion
+
+| Pipeline                                                     | ---                                                          |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20250503231006060](assets/image-20250503231006060.png) | ![image-20250503231014866](assets/image-20250503231014866.png) |
+
+##### Point Cloud Diffusion
+
+![image-20250503231124430](E:\GITHUB\3DV\Note\assets\image-20250503231124430-1746288750540-19.png)
+
+##### Conditioned Diffusion / Stable Diffusion
+
+- Recap in 2D:
+
+  ![image-20250503231427163](E:\GITHUB\3DV\Note\assets\image-20250503231427163-1746288750540-21.png)
+
+- 3D
+
+  ![image-20250503231537818](E:\GITHUB\3DV\Note\assets\image-20250503231537818-1746288750540-20.png)
+
+#### 4.3.4 Generation without 3D Training Data
+
+##### Pipeline
+
+Key idea is that generate 3D representations such that their renderings are indistinguishable from real sample.
+
+![image-20250503234722765](E:\GITHUB\3DV\Note\assets\image-20250503234722765-1746288750540-22.png)
+
+![image-20250503234553647](E:\GITHUB\3DV\Note\assets\image-20250503234553647-1746288750540-23.png)
+
+##### Text conditioned 3D Generation
+
+![image-20250503234941702](E:\GITHUB\3DV\Note\assets\image-20250503234941702-1746288750540-24.png)
+
+![image-20250503235010805](E:\GITHUB\3DV\Note\assets\image-20250503235010805-1746288750540-25.png)
+
+#### 4.3.5 Part-based 3D Generation
+
+##### Semantic-level Synthesis and Assembly
+
+![image-20250503235120687](E:\GITHUB\3DV\Note\assets\image-20250503235120687-1746288750540-26.png)
+
+- For fine-grained parts, we need coarse-to-fine generation
+
+  ![image-20250503235143376](E:\GITHUB\3DV\Note\assets\image-20250503235143376-1746288750541-28.png)
+
+##### Hierarchical Generation
+
+![image-20250504000513125](E:\GITHUB\3DV\Note\assets\image-20250504000513125-1746288750540-27.png)
+
+StructureNet represents shapes as a hierarchy of graphs $S = (P, H, R)$ for 3D shape generation. It uses a Variational Autoencoder with hierarchical graph networks for encoding and decoding. The encoder maps shapes to a latent feature vector $z$ through a geometry encoder for leaf nodes and a graph encoder for intermediate nodes. The decoder transforms $z$ back into a shape. The VAE is trained with a loss function $\mathcal{L}_{total}=\mathbb{E}_{S \sim S}[\mathcal{L}_{r}(S)+\mathcal{L}_{sc}(S)+\beta \mathcal{L}_{v}(S)]$, which includes reconstruction, structure consistency, and variational regularization losses. This framework enables various applications such as shape reconstruction, generation, interpolation, abstraction, and editing, outperforming baseline methods in experiments. 
+
+## Chapter 5 3D Comprehension [after Lecture 10]
+
+> This chapter introduces networks and pipelines that comprehends and analysis 3D object.
+
+### 5.1 **3D Backbone** [Lecture 10]
+
+#### 5.1.1 Overview
+
+To understand 3D data (voxel, point cloud), special network design is necessary. 3D backbone takes 3D data as input and is the foundamental of down stream tasks like object classification, object part segmentation and semantic scene parsing.
+
+#### 5.1.2 Voxel Networks
+
+- **Voxelization**: Represents the occupancy of regular 3D grids. A 3D CNN on volumetric data uses 4D kernels. However, it has a complexity issue. For example, the input resolution of 3D voxel data in 3DShapeNets (2015) is $30\times30\times30$ with $27000$ elements, compared to AlexNet's 2D input resolution of $224\times224$ with $50176$ elements. There is also information loss in voxelization.
+
+  ![image-20250504003543465](E:/GITHUB/3DV/Note/assets/image-20250504003543465.png)
+
+- **Solutions to Complexity and Information Loss**
+
+  - **Learn to Project**: Use “X - ray” rendering + Image (2D) CNNs, which have a very low number of parameters and low computation.
+
+    ![image-20250504003535135](E:/GITHUB/3DV/Note/assets/image-20250504003535135.png)
+
+  - **Sparsity of 3D Shapes**: Store only the occupied grids and constrain the computation near the surface. Sparse convolution is used, and there are several implementation libraries like SparseConvNet, MinkowskiEngine, TorchSparse, and Tensorflow3D. **Octree** is another approach, which recursively partitions the space with each internal node having eight children and uses a hash table for neighborhood searching. It shows better memory efficiency compared to voxel CNNs.
+
+    ![image-20250504003639176](E:\GITHUB\3DV\Note\assets\image-20250504003639176-1746290877179-3.png)
+
+#### 5.1.3 Point Networks
+
+- **PointNet**
+
+  ![image-20250504003918465](E:\GITHUB\3DV\Note\assets\image-20250504003918465-1746290877179-4.png)
+
+   - A point cloud consists of $N$ orderless points, where each point is represented by a $D$-dimensional coordinate. Mathematically, we can represent a point cloud as a set of points $\{x_1, x_2, \cdots, x_N\}$, with $x_i \in \mathbb{R}^D$. When processing point clouds with a deep neural network, the network's output should be invariant to the permutation of these $N$ points. That is, for any permutation $\pi$ of the indices $\{1, 2, \cdots, N\}$, the function $f(x_1, x_2, \cdots, x_N)$ should satisfy $f(x_1, x_2, \cdots, x_N) \equiv f(x_{\pi_1}, x_{\pi_2}, \cdots, x_{\pi_N})$.
+
+  **Constructing Symmetric Functions**
+
+  - PointNet constructs symmetric functions in the form of $f(x_1, x_2, \cdots, x_n)=\gamma \circ g(h(x_1), \cdots, h(x_n))$, where $g$ is a symmetric function. Common examples of symmetric functions $g$ are the maximum operation $g(x_1, x_2, \cdots, x_n)=\max\{x_1, x_2, \cdots, x_n\}$ and the sum operation $g(x_1, x_2, \cdots, x_n)=x_1 + x_2+\cdots+x_n$.
+  - $h$ is a function implemented by a Multi - Layer Perceptron (MLP). For each point $x_i$ in the point cloud, $h(x_i)$ maps the original point features to a new feature space. After that, the symmetric function $g$ aggregates these new - mapped features. For example, if $g$ is the max operation, it selects the maximum value among $h(x_1), h(x_2), \cdots, h(x_n)$, which is invariant to the permutation of the input points.
+  - $\gamma$ is another function, often implemented by an MLP, which further processes the output of $g$ to generate the final feature representation.
+
+  **Implementation Details **
+
+  - In the implementation of PointNet, after the input points pass through the initial transformation (using T - Net for 3D coordinate transformation and feature transformation), they are fed into MLPs for feature extraction. For example, the input points first go through an MLP with output dimensions $(64, 64)$ and then another MLP with output dimensions $(64, 128, 1024)$.
+  - The global feature is obtained by applying a max - pooling operation over the output of the last MLP. Mathematically, if the output of the MLP for $N$ points is $y_1, y_2, \cdots, y_N$, where $y_i \in \mathbb{R}^{1024}$, the global feature $y_{global}=\max\{y_1, y_2, \cdots, y_N\}$. Since the max - pooling operation is a symmetric function, the resulting global feature is invariant to the permutation of the input points. This global feature can then be used for tasks such as classification or further processed for segmentation tasks in PointNet.  
+
+  ![image-20250504004032675](E:/GITHUB/3DV/Note/assets/image-20250504004032675.png)
+
+  ![image-20250504004534271](E:\GITHUB\3DV\Note\assets\image-20250504004534271-1746290877179-5.png)
+
+  ![image-20250504004521190](E:\GITHUB\3DV\Note\assets\image-20250504004521190-1746290877179-7.png)
+
+- **PointNet++**
+
+  - **Basic Idea**: Recursively apply PointNet at local regions to achieve hierarchical feature learning, local translation invariance, and permutation invariance. It uses set abstraction (farthest point sampling + grouping + PointNet) for hierarchical point set feature learning. It can be applied to classification and segmentation tasks. For example, in non - Euclidean spaces for animate shape recognition, it can generalize well when using intrinsic point features (HKS, WKS, Gaussian curvature) and intrinsic distance metric (geodesic).
+
+- **Sampling Issues in Point Clouds**
+
+  - **Sampling Caused Domain Gap**: Sampling in point clouds can cause domain gaps, for example, between point clouds captured by different - beam LiDARs.
+  - **Solutions**
+    - Randomly throw away some points in the training data by a dropout layer (as in PointNet++).
+    - Learn to canonicalize the point cloud, such as using a completion network and sparse voxel labeling network to transform the point cloud to a canonical domain.
+    - Use density - aware convolution like Monte Carlo Convolution.
 
 
 
-### 3.4 NeRF: 
 
-
-
-### 3.5 Surface Reconstruction
-
-
-
-
-
-## Chapter 4 3D Generation [Lecture 9]
-
-
-
-
-
-## Chapter 5 3D Comprehension [Lecture 10]
 
 
 
