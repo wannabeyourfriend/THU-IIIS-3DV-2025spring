@@ -1,18 +1,166 @@
-# 忽略所有目录中的 .pth 文件
-**/*.pth
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# 忽略编译生成的文件
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# Jupyter Lab
+.ipynb_checkpoints/
+.jupyter/
+
+# Model checkpoints and weights
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*.pkl
+*.h5
+*.hdf5
+
+# 3D Data Files
+*.obj
+*.off
+*.ply
+*.stl
+*.gltf
+*.glb
+*.fbx
+*.dae
+*.blend
+*.3ds
+*.ase
+*.ifc
+
+# Point Cloud Data
+*.pcd
+*.las
+*.laz
+*.xyz
+*.pts
+*.asc
+
+# Depth Maps and Multi-view
+*.depth
+*.exr
+*.hdr
+
+# Volumetric Data
+*.nii
+*.nrrd
+*.mhd
+*.raw
+
+# Logs
+*.log
+logs/
+*.log.*
+*.logs
+wandb/
+tensorboard/
+
+# Data directories
+data/
+datasets/
+checkpoints/
+outputs/
+results/
+runs/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Compiled files
 *.o
 *.a
 *.so
+*.dylib
+*.dll
+*.exe
 
-# 忽略日志文件
-*.log
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
 
-# 忽略虚拟环境目录
-venv/
-env/
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
 
-# 忽略操作系统生成的文件
-.DS_Store
-Thumbs.db
+# Documentation
+docs/_build/
+site/
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Reproducibility
+seed/
+random_seed/
+reproduce_checkpoint/
+
+# Audio/Video (if needed for multimodal)
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.mp3
+*.wav
+
+# Large files
+*.bin
+*.dat
+large_files/
